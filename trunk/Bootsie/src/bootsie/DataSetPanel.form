@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<Form version="1.5" maxVersion="1.7" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
+  <NonVisualComponents>
+    <Component class="javax.swing.JSeparator" name="jSeparator1">
+      <Properties>
+        <Property name="name" type="java.lang.String" value="jSeparator1" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.ButtonGroup" name="PlotCVGroup">
+    </Component>
+  </NonVisualComponents>
+  <Properties>
+    <Property name="name" type="java.lang.String" value="Form" noResource="true"/>
+  </Properties>
+  <AuxValues>
+    <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="2"/>
+    <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="1"/>
+    <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
+  </AuxValues>
+
+  <Layout>
+    <DimensionLayout dim="0">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
+              <Component id="DataSetName" min="-2" pref="134" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
+              <Component id="PlotCVGroupLabel" min="-2" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="PlotCVPNG" min="-2" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="PlotCVSVG" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="PlotCVNone" min="-2" max="-2" attributes="0"/>
+              <EmptySpace pref="98" max="32767" attributes="0"/>
+              <Component id="NumBootLabel" min="-2" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="NumBootstraps" min="-2" pref="73" max="-2" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+    <DimensionLayout dim="1">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="103" groupAlignment="3" attributes="0">
+              <Component id="DataSetName" alignment="3" min="-2" max="-2" attributes="0"/>
+              <Component id="PlotCVPNG" alignment="3" min="-2" max="-2" attributes="0"/>
+              <Component id="PlotCVSVG" alignment="3" min="-2" max="-2" attributes="0"/>
+              <Component id="PlotCVGroupLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+              <Component id="NumBootstraps" alignment="3" min="-2" max="-2" attributes="0"/>
+              <Component id="NumBootLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+              <Component id="PlotCVNone" alignment="3" min="-2" max="-2" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+  </Layout>
+  <SubComponents>
+    <Component class="javax.swing.JLabel" name="DataSetName">
+      <Properties>
+        <Property name="text" type="java.lang.String" resourceKey="DataSetName.text"/>
+        <Property name="name" type="java.lang.String" value="DataSetName" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="PlotCVGroupLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" resourceKey="PlotCVGroupLabel.text"/>
+        <Property name="name" type="java.lang.String" value="PlotCVGroupLabel" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JRadioButton" name="PlotCVPNG">
+      <Properties>
+        <Property name="model" type="javax.swing.ButtonModel" editor="org.netbeans.modules.form.ComponentChooserEditor">
+          <ComponentRef name="null"/>
+        </Property>
+        <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.ComponentChooserEditor">
+          <ComponentRef name="PlotCVGroup"/>
+        </Property>
+        <Property name="text" type="java.lang.String" resourceKey="PlotCVPNG.text"/>
+        <Property name="name" type="java.lang.String" value="PlotCVPNG" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JRadioButton" name="PlotCVSVG">
+      <Properties>
+        <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.ComponentChooserEditor">
+          <ComponentRef name="PlotCVGroup"/>
+        </Property>
+        <Property name="text" type="java.lang.String" resourceKey="PlotCVSVG.text"/>
+        <Property name="name" type="java.lang.String" value="PlotCVSVG" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="NumBootstraps">
+      <Properties>
+        <Property name="text" type="java.lang.String" resourceKey="NumBootstraps.text"/>
+        <Property name="name" type="java.lang.String" value="NumBootstraps" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="NumBootLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" resourceKey="NumBootLabel.text"/>
+        <Property name="name" type="java.lang.String" value="NumBootLabel" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JRadioButton" name="PlotCVNone">
+      <Properties>
+        <Property name="model" type="javax.swing.ButtonModel" editor="org.netbeans.modules.form.ComponentChooserEditor">
+          <ComponentRef name="null"/>
+        </Property>
+        <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.ComponentChooserEditor">
+          <ComponentRef name="PlotCVGroup"/>
+        </Property>
+        <Property name="text" type="java.lang.String" resourceKey="PlotCVNone.text"/>
+        <Property name="name" type="java.lang.String" value="PlotCVNone" noResource="true"/>
+      </Properties>
+    </Component>
+  </SubComponents>
+</Form>
