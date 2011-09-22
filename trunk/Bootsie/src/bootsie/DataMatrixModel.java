@@ -20,6 +20,8 @@ class DataMatrixModel implements ActionListener{
    protected PlotterType plotter = PlotterType.NO_PLOTTER;
    protected String popName;
    int numBootstraps = 1000;
+   int numLoci = 0;
+   private ArrayList coefficientsOfVariation;
 
    public PlotterType getPlotterType(){
       return plotter;
@@ -48,6 +50,12 @@ class DataMatrixModel implements ActionListener{
       } else if (e.getActionCommand().equals("setPlotterPNG")){
          plotter = PlotterType.PNG_PLOTTER;
       }
+   }
+   
+   public ArrayList getAllNthLoci(){
+       ArrayList loci = new <Byte>ArrayList();
+       
+       return loci;
    }
 
    //event logic to respond to UI
