@@ -9,6 +9,11 @@ package bootsie;
  *
  * @author jpayne
  */
-public class BootsieEstimator {
+public class BootsieEstimator implements Runnable{
+    
+    
+    public void run(){
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 
 }

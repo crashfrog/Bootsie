@@ -8,6 +8,7 @@ package bootsie;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Iterator;
 import javax.swing.JTextField;
 
 /**
@@ -28,7 +29,7 @@ class DataMatrixModel implements ActionListener{
    }
 
    //some kind of keyed table of vectors to store values
-   private ArrayList populations = new <DataSample>ArrayList();
+   private ArrayList<DataSample> populations = new <DataSample>ArrayList();
 
    public DataMatrixModel(String n, DataSetPanel p){
       popName = n;
@@ -52,7 +53,7 @@ class DataMatrixModel implements ActionListener{
       }
    }
    
-   public ArrayList getAllNthLoci(){
+   public ArrayList getAllNthLoci(int n){
        ArrayList loci = new <Byte>ArrayList();
        
        return loci;
@@ -65,5 +66,18 @@ class DataMatrixModel implements ActionListener{
 
 
    //dispatch a boostrapping thread for the actual computation
+
+    int getLength() {
+        //return number of loci in population, which is the most loci in any sample.
+        Iterator<DataSample> i = populations.iterator();
+        int length = 0;
+        while (i.hasNext()){
+            DataSample d = i.next();
+            if (d.size() > length){
+                length = d.size();
+            }
+        }
+        return length;
+    }
 
 }

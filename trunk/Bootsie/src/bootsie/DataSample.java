@@ -27,5 +27,9 @@ public class DataSample{
    public ArrayList getLoci(){
       return loci;
    }
+   
+   public int size(){
+       return loci.size();
+   }
 
 }
