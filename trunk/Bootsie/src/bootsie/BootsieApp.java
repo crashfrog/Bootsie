@@ -65,7 +65,7 @@ public class BootsieApp extends SingleFrameApplication {
 
          String popName = "";
 
-         popName = io.readLine();
+         popName = source.getName();
          
 
          int loci = 0;
@@ -105,20 +105,25 @@ public class BootsieApp extends SingleFrameApplication {
                DataSample dataSample = new DataSample(sampleName);
                for (int i = 0; i < length; i++) {
                   c = matrixLineRaw.charAt(i);
-                  if (c != '1' || c != '0') {
+                  if (c == 45 || c == 57) { //- and 9 are 'no data' characters
                      c = '?';
+                     dataSample.getLoci().add(new Byte((byte) '?'));
+                     //System.out.print('?');
                   }
                   if (c != '\t') {
                      //dataSample.getLoci().add(Byte.parseByte(Character.toString(c)));
                      //or
                      
-                      if (c == '1'){
-                      dataSample.getLoci().add(1);
-                      } else if (c == '0'){
-                      dataSample.getLoci().add(0);
+                      if (c == (byte) 49){ //1
+                        dataSample.getLoci().add(new Byte((byte) 1));
+                      } else if (c == (byte) 48){ //0
+                        dataSample.getLoci().add(new Byte((byte) 0));
                       }
+                      
                   }
                }
+               //debug
+               //System.out.println(dataSample.getLoci());
                dataModel.addDataSample(dataSample);
 
             } else {
