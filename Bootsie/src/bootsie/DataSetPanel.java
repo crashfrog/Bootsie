@@ -88,6 +88,7 @@ public class DataSetPanel extends javax.swing.JPanel {
        PlotCVSVG.addActionListener(m);
        PlotCVPNG.addActionListener(m);
        PlotCVNone.addActionListener(m);
+       addMouseListener(m);
     }
 
     public void displayBeginComputation(){

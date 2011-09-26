@@ -7,6 +7,8 @@ package bootsie;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 import javax.swing.JTextField;
@@ -15,7 +17,7 @@ import javax.swing.JTextField;
  *
  * @author jpayne
  */
-class DataMatrixModel implements ActionListener{
+class DataMatrixModel implements ActionListener, MouseListener{
    //association to UI element
    private DataSetPanel panel;
    protected PlotterType plotter = PlotterType.NO_PLOTTER;
@@ -39,6 +41,10 @@ class DataMatrixModel implements ActionListener{
    public void addDataSample(DataSample d){
       populations.add(d);
    }
+   
+   public Iterator iterator(){
+       return populations.iterator();
+   }
 
    public void actionPerformed(ActionEvent e) {
       if (e.getActionCommand().equals("setNumBootstraps")){
@@ -50,12 +56,19 @@ class DataMatrixModel implements ActionListener{
          plotter = PlotterType.SVG_PLOTTER;
       } else if (e.getActionCommand().equals("setPlotterPNG")){
          plotter = PlotterType.PNG_PLOTTER;
+      
       }
    }
    
    public ArrayList getAllNthLoci(int n){
        ArrayList loci = new <Byte>ArrayList();
-       
+       Iterator<DataSample> it = populations.iterator();
+       while(it.hasNext()){
+           Byte b = it.next().getLoci().get(n);
+           if (b == 1 || b == 0){
+               loci.add(b);
+           }
+       }
        return loci;
    }
 
@@ -78,6 +91,34 @@ class DataMatrixModel implements ActionListener{
             }
         }
         return length;
+    }
+    
+    public Integer getNumSamples(){
+        return new Integer(populations.size());
+    }
+
+    public void mouseClicked(MouseEvent e) {
+        System.out.println("Mouse event.");
+        if (e.getClickCount() == 2){
+            BootsieApp.getApplication().report("Showing " + popName);
+            DataViewer.getViewer().showDataMatrix(this);
+        }
+    }
+
+    public void mousePressed(MouseEvent e) {
+
+    }
+
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    public void mouseExited(MouseEvent e) {
+
     }
 
 }
