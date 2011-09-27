@@ -64,9 +64,15 @@ class DataMatrixModel implements ActionListener, MouseListener{
        ArrayList loci = new <Byte>ArrayList();
        Iterator<DataSample> it = populations.iterator();
        while(it.hasNext()){
-           Byte b = it.next().getLoci().get(n);
-           if (b == 1 || b == 0){
-               loci.add(b);
+           try {
+               Byte b = it.next().getLoci().get(n);
+               if (b == 1 || b == 0) {
+                   loci.add(b);
+               }
+           } catch (IndexOutOfBoundsException ex){
+               //it's Saga's responsibility to make sure all data strings are
+               //the same length, but just in case they're not, it's ok if we
+               //go for the Nth loci in a sample but there's no data there.
            }
        }
        return loci;
@@ -98,7 +104,6 @@ class DataMatrixModel implements ActionListener, MouseListener{
     }
 
     public void mouseClicked(MouseEvent e) {
-        System.out.println("Mouse event.");
         if (e.getClickCount() == 2){
             BootsieApp.getApplication().report("Showing " + popName);
             DataViewer.getViewer().showDataMatrix(this);

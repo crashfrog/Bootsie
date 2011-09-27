@@ -55,6 +55,12 @@ public class BootsieApp extends SingleFrameApplication {
         return Application.getInstance(BootsieApp.class);
 
     }
+    
+    private static String NTSYS_REPORT_SAMPLE_NAME_TAB_DATA_REGEX = "[a-zA-Z0-9| |-]+\t[0|1|9|.|?|-]+";
+    private static String NTSYS_REPORT_SAMPLE_NAME_REGEX = "[a-zA-Z0-9| |-]+";
+    private static String NTSYS_REPORT_DATA_REGEX = "\t[0-9|?|.|-]+";
+    private static String NTSYS_REPORT_FIRST_LINE_IS_NOT_NAME = "[0-9]+\t[0-9]+";
+    private static String TEXT_FILE_EXTENSION = ".txt";
 
     public static void parseFile(File source){
        //parse data file and fill DataMatrixModelCollection
@@ -63,9 +69,14 @@ public class BootsieApp extends SingleFrameApplication {
          BootsieApp.getApplication().report("Opening " + source.getName() + "...");
          BufferedReader io = new BufferedReader(new FileReader(source));
 
-         String popName = "";
-
-         popName = source.getName();
+         String popName;
+         //check to see if first line is name of a population or the number of loci/samples
+         line = io.readLine();
+         if (line.matches(NTSYS_REPORT_FIRST_LINE_IS_NOT_NAME)){
+             popName = source.getName().replaceFirst(TEXT_FILE_EXTENSION, "");//trim ".txt" when using filename as popname
+         } else {
+             popName = line;
+         }
          
 
          int loci = 0;
@@ -76,19 +87,19 @@ public class BootsieApp extends SingleFrameApplication {
             if (line.contains("end") || line.equals("\r") || line.equals("\n") || line.equals("\r\n")) {
                //finish parsing and close datamatrixmodel
                BootsieApp.getApplication().report("Loaded " + popName + ".");
-            } else if (line.matches("[a-zA-Z0-9|-]+\t[0-9|-]+")) {
+            } else if (line.matches(NTSYS_REPORT_SAMPLE_NAME_TAB_DATA_REGEX)) {
                //get the sample name
 
                Pattern pattern;
                Matcher m;
-               pattern = Pattern.compile("[a-zA-Z0-9|-]");
+               pattern = Pattern.compile(NTSYS_REPORT_SAMPLE_NAME_REGEX);
                m = pattern.matcher(line);
 
                m.find();
                String sampleName = "";
                sampleName = m.group();
 
-               pattern = Pattern.compile("\t[0-9|-]+");
+               pattern = Pattern.compile(NTSYS_REPORT_DATA_REGEX);
                m = pattern.matcher(line);
                String matrixLineRaw = "";
                m.find();
@@ -105,7 +116,7 @@ public class BootsieApp extends SingleFrameApplication {
                DataSample dataSample = new DataSample(sampleName);
                for (int i = 0; i < length; i++) {
                   c = matrixLineRaw.charAt(i);
-                  if (c == 45 || c == 57) { //- and 9 are 'no data' characters
+                  if (c == 45 || c == 57 || c== 46) { //-, ., and 9 are 'no data' characters
                      c = '?';
                      dataSample.getLoci().add(new Byte((byte) '?'));
                      //System.out.print('?');
@@ -133,9 +144,9 @@ public class BootsieApp extends SingleFrameApplication {
          }
       } catch (FileNotFoundException ex) {
          //System.out.println(ex);
-
+          BootsieApp.getApplication().report("Unable to load: " + source.getName() + " not found.");
       } catch (IOException ex) {
-         
+         BootsieApp.getApplication().report("An error occured while reading " + source.getName() + ". Please terminate and restart Bootsie.");
       }
       BootsieApp.getApplication().report("Done.");
        
