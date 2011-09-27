@@ -38,7 +38,12 @@ public class DataSample{
        s.append(sampleName + "\t");
        Iterator<Byte> it = loci.iterator();
        while (it.hasNext()){
-           s.append(it.next());
+           byte b = it.next();
+           if (b == 63){
+            s.append('.');
+           } else {
+               s.append(b);
+           }
        }
        return s.toString();
    }
