@@ -25,7 +25,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class BootsieView extends FrameView {
 
    private boolean isMasterAdded = false;
-   private boolean fileOpened = false;
 
     public BootsieView(SingleFrameApplication app) {
         super(app);
@@ -123,11 +122,7 @@ public class BootsieView extends FrameView {
       int returnVal = fc.showOpenDialog(BootsieApp.getApplication().getMainFrame());
       if (returnVal == JFileChooser.APPROVE_OPTION) {
          File[] files = fc.getSelectedFiles();
-         if (files != null){
-            fileOpened = true;
-             BootsieApp.parseFile(files);
-            
-         }
+         BootsieApp.parseFile(files);
       }
    }
 
@@ -294,10 +289,8 @@ public class BootsieView extends FrameView {
 
     private void FileOpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FileOpenActionPerformed
        openFile();
-       if (fileOpened){
-        EstimationReportLabel.setText("Estimating...");
-        GoButton.setEnabled(true);
-       }
+       EstimationReportLabel.setText("Estimating...");
+       GoButton.setEnabled(true);
     }//GEN-LAST:event_FileOpenActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
