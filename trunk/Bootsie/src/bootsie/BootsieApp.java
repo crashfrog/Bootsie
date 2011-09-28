@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.jdesktop.application.Action;
@@ -168,5 +169,13 @@ public class BootsieApp extends SingleFrameApplication {
    @Action
    public void beginAnalysis() {
       //dispatch computation threads
+   }
+
+   void exportFile(File file, StringBuilder export) {
+      throw new UnsupportedOperationException("Not yet implemented");
+   }
+
+   void exportFiles(File file, ArrayList<StringBuilder> exports) {
+      throw new UnsupportedOperationException("Not yet implemented");
    }
 }

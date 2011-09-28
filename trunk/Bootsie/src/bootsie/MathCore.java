@@ -9,7 +9,7 @@ import java.util.Iterator;
 
 /**
  *
- * @author John Foster
+ * @author Justin Payne
  */
 public abstract class MathCore {
     
