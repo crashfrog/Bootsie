@@ -16,9 +16,9 @@ public abstract class DataExporter {
 
    private static String fileExtention;
 
-   public abstract void dataExport(File file, ArrayList<DataMatrixModel> data, Boolean combine);
+   public abstract void dataExport(File file, ArrayList<PopulationMatrixModel> data, Boolean combine);
 
-   public abstract StringBuilder generateString(DataMatrixModel data);
+   public abstract StringBuilder generateString(PopulationMatrixModel data);
 
    public abstract String getFileExtention();
 

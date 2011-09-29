@@ -84,7 +84,7 @@ public class DataSetPanel extends javax.swing.JPanel {
        DataSetName.setText(s);
     }
 
-    public void addModel(DataMatrixModel m){
+    public void addModel(PopulationMatrixModel m){
        //add model as listener to plotter selector and bootstrap number field
        NumBootstraps.addActionListener(m);
        PlotCVSVG.addActionListener(m);

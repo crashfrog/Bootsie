@@ -12,12 +12,14 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 import javax.swing.JTextField;
+import javax.swing.ListModel;
+import javax.swing.event.ListDataListener;
 
 /**
  *
  * @author jpayne
  */
-class DataMatrixModel implements ActionListener, MouseListener{
+class PopulationMatrixModel implements ActionListener, MouseListener, ListModel{
    //association to UI element
    private DataSetPanel panel;
    protected PlotterType plotter = PlotterType.NO_PLOTTER;
@@ -31,19 +33,31 @@ class DataMatrixModel implements ActionListener, MouseListener{
    }
 
    //some kind of keyed table of vectors to store values
-   private ArrayList<DataSample> populations = new <DataSample>ArrayList();
+   private ArrayList<DataSample> samples = new <DataSample>ArrayList();
 
-   public DataMatrixModel(String n, DataSetPanel p){
+   public PopulationMatrixModel(String n, DataSetPanel p){
       popName = n;
       panel = p;
    }
 
    public void addDataSample(DataSample d){
-      populations.add(d);
+      samples.add(d);
+   }
+   
+   public String getName(){
+       return popName;
+   }
+   
+    @Override
+   public String toString(){
+        StringBuilder s = new StringBuilder();
+        s.append(popName).append("(").append(samples.size()).append(" samples, ").append(getLength()).append(" loci)");
+       return s.toString();
+
    }
    
    public Iterator iterator(){
-       return populations.iterator();
+       return samples.iterator();
    }
 
    public void actionPerformed(ActionEvent e) {
@@ -62,7 +76,7 @@ class DataMatrixModel implements ActionListener, MouseListener{
    
    public ArrayList getAllNthLoci(int n){
        ArrayList loci = new <Byte>ArrayList();
-       Iterator<DataSample> it = populations.iterator();
+       Iterator<DataSample> it = samples.iterator();
        while(it.hasNext()){
            try {
                Byte b = it.next().getLoci().get(n);
@@ -87,20 +101,24 @@ class DataMatrixModel implements ActionListener, MouseListener{
    //dispatch a boostrapping thread for the actual computation
 
     int getLength() {
-        //return number of loci in population, which is the most loci in any sample.
-        Iterator<DataSample> i = populations.iterator();
-        int length = 0;
-        while (i.hasNext()){
-            DataSample d = i.next();
-            if (d.size() > length){
-                length = d.size();
+        if (numLoci == 0){
+            //return number of loci in population, which is the most loci in any sample.
+            Iterator<DataSample> i = samples.iterator();
+            int length = 0;
+            while (i.hasNext()) {
+                DataSample d = i.next();
+                if (d.size() > length) {
+                    length = d.size();
+                }
             }
+            return length;
+        } else {
+            return numLoci;
         }
-        return length;
     }
     
-    public Integer getNumSamples(){
-        return new Integer(populations.size());
+    public int getSize(){
+        return samples.size();
     }
 
     public void mouseClicked(MouseEvent e) {
@@ -124,6 +142,20 @@ class DataMatrixModel implements ActionListener, MouseListener{
 
     public void mouseExited(MouseEvent e) {
 
+    }
+
+    
+
+    public Object getElementAt(int index) {
+        return samples.get(index);
+    }
+
+    public void addListDataListener(ListDataListener l) {
+        //the model doesn't need to know which populations are selected
+    }
+
+    public void removeListDataListener(ListDataListener l) {
+        
     }
 
 }

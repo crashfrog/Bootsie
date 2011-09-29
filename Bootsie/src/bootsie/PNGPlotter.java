@@ -13,7 +13,7 @@ public class PNGPlotter implements Plotter {
 
    public final PlotterType plotterType = PlotterType.PNG_PLOTTER;
 
-   public void plotVariance(DataMatrixModel model) {
+   public void plotVariance(PopulationMatrixModel model) {
       throw new UnsupportedOperationException("Not supported yet.");
    }
 
