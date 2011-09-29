@@ -41,12 +41,17 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Component id="exportSeparately" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="213" max="32767" attributes="0"/>
+              <EmptySpace pref="49" max="32767" attributes="0"/>
           </Group>
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Component id="exportMerged" min="-2" max="-2" attributes="0"/>
               <EmptySpace pref="249" max="32767" attributes="0"/>
+          </Group>
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+              <EmptySpace pref="251" max="32767" attributes="0"/>
           </Group>
           <Component id="jScrollPane1" alignment="1" pref="400" max="32767" attributes="0"/>
       </Group>
@@ -54,7 +59,10 @@
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="1" attributes="0">
-              <Component id="jScrollPane1" pref="195" max="32767" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
+              <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jScrollPane1" min="-2" pref="176" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="exportMerged" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
@@ -135,7 +143,14 @@
           <ComponentRef name="exportMergeGroup"/>
         </Property>
         <Property name="text" type="java.lang.String" resourceKey="exportSeparately.text"/>
+        <Property name="actionCommand" type="java.lang.String" resourceKey="exportSeparately.actionCommand"/>
         <Property name="name" type="java.lang.String" value="exportSeparately" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel1">
+      <Properties>
+        <Property name="text" type="java.lang.String" resourceKey="jLabel1.text"/>
+        <Property name="name" type="java.lang.String" value="jLabel1" noResource="true"/>
       </Properties>
     </Component>
   </SubComponents>

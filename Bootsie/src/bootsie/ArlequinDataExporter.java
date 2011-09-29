@@ -13,6 +13,8 @@ import java.util.ArrayList;
  * @author jpayne
  */
 public class ArlequinDataExporter extends DataExporter {
+   
+   private static String fileExtention = ".txt";
 
    @Override
    public void dataExport(File file, ArrayList<DataMatrixModel> data, Boolean combine) {
@@ -22,6 +24,11 @@ public class ArlequinDataExporter extends DataExporter {
    @Override
    public StringBuilder generateString(DataMatrixModel data) {
       throw new UnsupportedOperationException("Not supported yet.");
+   }
+
+   @Override
+   public String getFileExtention() {
+      return fileExtention;
    }
 
 }

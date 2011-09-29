@@ -15,6 +15,8 @@ import java.util.Iterator;
  */
 public class PopgeneDataExporter extends DataExporter {
 
+   private static String fileExtention = ".txt";
+
    private static String header = "";
    private static String nullChar = "";
    private static String delimitChar = "";
@@ -63,6 +65,11 @@ public class PopgeneDataExporter extends DataExporter {
          export.append("\n");
       }
       return export;
+   }
+
+   @Override
+   public String getFileExtention() {
+      return fileExtention;
    }
 
 }

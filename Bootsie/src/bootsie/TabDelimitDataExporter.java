@@ -14,6 +14,8 @@ import java.util.ArrayList;
  */
 public class TabDelimitDataExporter extends DataExporter {
 
+   private static String fileExtention = ".txt";
+
    @Override
    public void dataExport(File file, ArrayList<DataMatrixModel> data, Boolean combine) {
       throw new UnsupportedOperationException("Not supported yet.");
@@ -22,6 +24,11 @@ public class TabDelimitDataExporter extends DataExporter {
    @Override
    public StringBuilder generateString(DataMatrixModel data) {
       throw new UnsupportedOperationException("Not supported yet.");
+   }
+
+   @Override
+   public String getFileExtention() {
+      return fileExtention;
    }
 
 }

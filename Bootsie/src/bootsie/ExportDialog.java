@@ -10,16 +10,28 @@
  */
 package bootsie;
 
+import java.io.File;
+import java.util.ArrayList;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 /**
  *
  * @author Justin Payne
  */
 public class ExportDialog extends javax.swing.JDialog {
 
+   DataExporter exporter;
+
     /** Creates new form ExportDialog */
     public ExportDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+    }
+
+    public ExportDialog(java.awt.Frame parent, boolean modal, DataExporter e){
+       this(parent, modal);
+       exporter = e;
     }
 
     /** This method is called from within the constructor to
@@ -39,6 +51,7 @@ public class ExportDialog extends javax.swing.JDialog {
       jSeparator1 = new javax.swing.JSeparator();
       exportMerged = new javax.swing.JRadioButton();
       exportSeparately = new javax.swing.JRadioButton();
+      jLabel1 = new javax.swing.JLabel();
 
       setAlwaysOnTop(true);
       setModalityType(java.awt.Dialog.ModalityType.APPLICATION_MODAL);
@@ -80,7 +93,11 @@ public class ExportDialog extends javax.swing.JDialog {
 
       exportMergeGroup.add(exportSeparately);
       exportSeparately.setText(resourceMap.getString("exportSeparately.text")); // NOI18N
+      exportSeparately.setActionCommand(resourceMap.getString("exportSeparately.actionCommand")); // NOI18N
       exportSeparately.setName("exportSeparately"); // NOI18N
+
+      jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
+      jLabel1.setName("jLabel1"); // NOI18N
 
       javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
       getContentPane().setLayout(layout);
@@ -96,17 +113,24 @@ public class ExportDialog extends javax.swing.JDialog {
          .addGroup(layout.createSequentialGroup()
             .addContainerGap()
             .addComponent(exportSeparately)
-            .addContainerGap(213, Short.MAX_VALUE))
+            .addContainerGap(49, Short.MAX_VALUE))
          .addGroup(layout.createSequentialGroup()
             .addContainerGap()
             .addComponent(exportMerged)
             .addContainerGap(249, Short.MAX_VALUE))
+         .addGroup(layout.createSequentialGroup()
+            .addContainerGap()
+            .addComponent(jLabel1)
+            .addContainerGap(251, Short.MAX_VALUE))
          .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
       );
       layout.setVerticalGroup(
          layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
          .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE)
+            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jLabel1)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addComponent(exportMerged)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -125,10 +149,23 @@ public class ExportDialog extends javax.swing.JDialog {
 
     private void exportButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportButtonActionPerformed
        // TODO add your handling code here:
+       //get a file location and pass it and the data matrix array to the exporter
+       ArrayList<DataMatrixModel> list = new ArrayList<DataMatrixModel>();
+       File file;
+       JFileChooser fc = new JFileChooser();
+       FileNameExtensionFilter filter = new FileNameExtensionFilter("", exporter.getFileExtention());
+       fc.setFileFilter(filter);
+       if (fc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION){
+          //collect selected DataMatrixModels into list
+          file = fc.getSelectedFile();
+          exporter.dataExport(file, list, exportMerged.isSelected());
+          this.setVisible(false);
+       }
     }//GEN-LAST:event_exportButtonActionPerformed
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
        // TODO add your handling code here:
+       this.setVisible(false);
     }//GEN-LAST:event_cancelButtonActionPerformed
 
  
@@ -140,6 +177,7 @@ public class ExportDialog extends javax.swing.JDialog {
    private javax.swing.ButtonGroup exportMergeGroup;
    private javax.swing.JRadioButton exportMerged;
    private javax.swing.JRadioButton exportSeparately;
+   private javax.swing.JLabel jLabel1;
    private javax.swing.JScrollPane jScrollPane1;
    private javax.swing.JSeparator jSeparator1;
    // End of variables declaration//GEN-END:variables
