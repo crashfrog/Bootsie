@@ -14,9 +14,13 @@ import java.util.ArrayList;
  */
 public abstract class DataExporter {
 
+   private static String fileExtention;
+
    public abstract void dataExport(File file, ArrayList<DataMatrixModel> data, Boolean combine);
 
    public abstract StringBuilder generateString(DataMatrixModel data);
+
+   public abstract String getFileExtention();
 
 
 }
