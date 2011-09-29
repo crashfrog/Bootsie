@@ -13,7 +13,7 @@ public class SVGPlotter implements Plotter {
 
    public final PlotterType plotterType = PlotterType.SVG_PLOTTER;
 
-   public void plotVariance(DataMatrixModel model) {
+   public void plotVariance(PopulationMatrixModel model) {
       throw new UnsupportedOperationException("Not supported yet.");
    }
 

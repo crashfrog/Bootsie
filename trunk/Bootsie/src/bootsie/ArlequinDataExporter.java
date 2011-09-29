@@ -7,6 +7,7 @@ package bootsie;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  *
@@ -14,16 +15,45 @@ import java.util.ArrayList;
  */
 public class ArlequinDataExporter extends DataExporter {
    
-   private static String fileExtention = ".txt";
+   private static String fileExtention = ".arp";
+   private static String header = "#============================================\n#Project file created for Arlequin by Bootsie\n#============================================\n\n#Use # to comment to end of line.\n#Some optional features of the Arlequin data format not supported by Bootsie.\n\n[Profile]\n";
+   private static String nullChar = ".";
+   private static String delimitChar = "";
 
    @Override
-   public void dataExport(File file, ArrayList<DataMatrixModel> data, Boolean combine) {
-      throw new UnsupportedOperationException("Not supported yet.");
+   public void dataExport(File file, ArrayList<PopulationMatrixModel> data, Boolean combine) {
+      StringBuilder export = new StringBuilder(header);
+      export.append("\tNbSamples=");
+      //append NbSamples
+      export.append("\tGenotypicData=0\n\tGameticPhase=1\n\tLocusSeparator=NONE\n\tRecessiveData=0\n\tMissingData=\'.\'\n\n[Data]\n\n[[Samples]]\n\n");
+      
    }
 
    @Override
-   public StringBuilder generateString(DataMatrixModel data) {
-      throw new UnsupportedOperationException("Not supported yet.");
+   public StringBuilder generateString(PopulationMatrixModel data) {
+      StringBuilder export = new StringBuilder();
+      export.append("\tSampleName=\"" + data.getName() + "\"\n");
+      export.append("\tSampleSize= " + data.getLength() + "\n");
+      export.append("\tSampleData = {");
+      Iterator<DataSample> it = data.iterator();
+      while(it.hasNext()){
+         DataSample s = it.next();
+         export.append("\t\t" + s.getName() + "\t1\t");
+         ArrayList<Byte> loci = s.getLoci();
+         Iterator<Byte> i = loci.iterator();
+         while(i.hasNext()){
+            Byte b = i.next();
+            if (b != 0 && b != 1){
+               export.append(nullChar);
+            } else {
+               export.append(b.toString());
+            }
+            //export.append(delimitChar);
+         }
+         export.append("\n");
+      }
+      export.append("}\n");
+      return export;
    }
 
    @Override

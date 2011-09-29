@@ -32,12 +32,12 @@ public class DataViewer extends javax.swing.JFrame {
         return dataViewer;
     }
     
-    public void showDataMatrix(DataMatrixModel d){
+    public void showDataMatrix(PopulationMatrixModel d){
         javax.swing.JTextArea t = jTextArea1;
         t.setText("");
         //spool out data matrix
         t.append("Population name: " + d.popName + "\n");
-        t.append(d.getNumSamples().toString() + " samples\n");
+        t.append(d.getSize() + " samples\n");
         t.append(new Integer(d.getLength()).toString() + " loci\n");
         Iterator<DataSample> it = d.iterator();
         while (it.hasNext()){

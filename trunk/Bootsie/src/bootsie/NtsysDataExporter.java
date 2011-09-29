@@ -19,22 +19,22 @@ public class NtsysDataExporter extends DataExporter {
    private static String fileExtention = ".txt";
 
    private static String header = "";
-   private static String nullChar = "-";
+   private static String nullChar = "?";
    private static String delimitChar = "\t";
 
    @Override
-   public void dataExport(File file, ArrayList<DataMatrixModel> data, Boolean combine) {
+   public void dataExport(File file, ArrayList<PopulationMatrixModel> data, Boolean combine) {
       //build export string via stringbuilder
       if (combine) {
          StringBuilder export = new StringBuilder(header);
-         Iterator<DataMatrixModel> it = data.iterator();
+         Iterator<PopulationMatrixModel> it = data.iterator();
          while (it.hasNext()){
             export.append(generateString(it.next()));
          }
          BootsieApp.getApplication().exportFile(file, export);
       } else {
          ArrayList<StringBuilder> exports = new ArrayList<StringBuilder>();
-         Iterator<DataMatrixModel> it = data.iterator();
+         Iterator<PopulationMatrixModel> it = data.iterator();
          while(it.hasNext()){
             StringBuilder export = new StringBuilder(header);
             export.append(generateString(it.next()));
@@ -49,7 +49,7 @@ public class NtsysDataExporter extends DataExporter {
    }
 
    @Override
-   public StringBuilder generateString(DataMatrixModel data) {
+   public StringBuilder generateString(PopulationMatrixModel data) {
       StringBuilder export = new StringBuilder();
       Iterator<DataSample> it = data.iterator();
       while(it.hasNext()){

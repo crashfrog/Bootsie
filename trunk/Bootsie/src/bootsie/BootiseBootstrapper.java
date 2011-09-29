@@ -14,11 +14,11 @@ import java.util.Iterator;
  */
 public class BootiseBootstrapper implements Runnable {
 
-   private DataMatrixModel matrix;
+   private PopulationMatrixModel matrix;
    
    // mean of means, stdDev of means, CoV of means
    
-   public void BootsieBootstrapper(DataMatrixModel m){
+   public void BootsieBootstrapper(PopulationMatrixModel m){
        matrix = m;
    }
     

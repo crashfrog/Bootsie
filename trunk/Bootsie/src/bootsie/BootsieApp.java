@@ -82,7 +82,7 @@ public class BootsieApp extends SingleFrameApplication {
 
          int loci = 0;
          int samples = 0;
-         DataMatrixModel dataModel = BootsieApp.getApplication().view.newDataModel(popName);
+         PopulationMatrixModel dataModel = BootsieApp.getApplication().view.newDataModel(popName);
 
          while ((line = io.readLine()) != null) {
             if (line.contains("end") || line.equals("\r") || line.equals("\n") || line.equals("\r\n")) {

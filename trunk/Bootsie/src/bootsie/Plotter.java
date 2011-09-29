@@ -12,7 +12,7 @@ package bootsie;
 public interface Plotter {
    //interface for PNG and SVG plotters
 
-   public void plotVariance(DataMatrixModel model);
+   public void plotVariance(PopulationMatrixModel model);
 
    public void savePlot();
 

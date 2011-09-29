@@ -86,8 +86,8 @@ public class BootsieView extends FrameView {
         });
     }
 
-    public DataMatrixModel newDataModel(String n){
-       DataMatrixModel newModel;
+    public PopulationMatrixModel newDataModel(String n){
+       PopulationMatrixModel newModel;
        DataSetPanel setPanel = new DataSetPanel(true);
        setPanel.setDataName(n);
        if (isMasterAdded){
@@ -97,9 +97,9 @@ public class BootsieView extends FrameView {
           isMasterAdded = true;
        }
        DataSetPane.add(setPanel);
-       newModel = new DataMatrixModel(n, setPanel);
+       newModel = new PopulationMatrixModel(n, setPanel);
        setPanel.addModel(newModel);
-       DataMatrixModelCollection.getInstance().addMatrix(newModel);
+       PopulationMatrixModelCollection.getInstance().addMatrix(newModel);
        return newModel;
     }
 

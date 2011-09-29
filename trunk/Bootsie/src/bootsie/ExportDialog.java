@@ -27,6 +27,7 @@ public class ExportDialog extends javax.swing.JDialog {
     public ExportDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        ExportList.setModel(PopulationMatrixModelCollection.getInstance());
     }
 
     public ExportDialog(java.awt.Frame parent, boolean modal, DataExporter e){
@@ -150,7 +151,7 @@ public class ExportDialog extends javax.swing.JDialog {
     private void exportButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportButtonActionPerformed
        // TODO add your handling code here:
        //get a file location and pass it and the data matrix array to the exporter
-       ArrayList<DataMatrixModel> list = new ArrayList<DataMatrixModel>();
+       ArrayList<PopulationMatrixModel> list;
        File file;
        JFileChooser fc = new JFileChooser();
        FileNameExtensionFilter filter = new FileNameExtensionFilter("", exporter.getFileExtention());
@@ -158,6 +159,7 @@ public class ExportDialog extends javax.swing.JDialog {
        if (fc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION){
           //collect selected DataMatrixModels into list
           file = fc.getSelectedFile();
+          list = new ArrayList<PopulationMatrixModel>(ExportList.getSelectedValuesList());
           exporter.dataExport(file, list, exportMerged.isSelected());
           this.setVisible(false);
        }
