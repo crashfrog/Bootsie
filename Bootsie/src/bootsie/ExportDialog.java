@@ -113,6 +113,7 @@ public class ExportDialog extends javax.swing.JDialog {
         exportMergeGroup.add(exportSeparately);
         exportSeparately.setText(resourceMap.getString("exportSeparately.text")); // NOI18N
         exportSeparately.setActionCommand(resourceMap.getString("exportSeparately.actionCommand")); // NOI18N
+        exportSeparately.setEnabled(false);
         exportSeparately.setName("exportSeparately"); // NOI18N
 
         jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
@@ -135,13 +136,14 @@ public class ExportDialog extends javax.swing.JDialog {
                 .addContainerGap(49, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(exportMerged)
-                .addContainerGap(249, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(jLabel1)
                 .addContainerGap(251, Short.MAX_VALUE))
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
+                    .addComponent(exportMerged))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
