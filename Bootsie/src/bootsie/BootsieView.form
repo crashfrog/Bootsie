@@ -49,10 +49,11 @@
             </MenuItem>
           </SubComponents>
         </Menu>
-        <Menu class="javax.swing.JMenu" name="jMenu1">
+        <Menu class="javax.swing.JMenu" name="ExportMenu">
           <Properties>
-            <Property name="text" type="java.lang.String" resourceKey="jMenu1.text"/>
-            <Property name="name" type="java.lang.String" value="jMenu1" noResource="true"/>
+            <Property name="text" type="java.lang.String" resourceKey="ExportMenu.text"/>
+            <Property name="enabled" type="boolean" value="false"/>
+            <Property name="name" type="java.lang.String" value="ExportMenu" noResource="true"/>
           </Properties>
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItem1">
@@ -229,6 +230,7 @@
               <action class="bootsie.BootsieApp" id="beginAnalysis" methodName="beginAnalysis"/>
             </Property>
             <Property name="text" type="java.lang.String" resourceKey="GoButton.text"/>
+            <Property name="enabled" type="boolean" value="false"/>
             <Property name="name" type="java.lang.String" value="GoButton" noResource="true"/>
           </Properties>
         </Component>

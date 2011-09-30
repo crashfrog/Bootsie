@@ -51,7 +51,7 @@ class PopulationMatrixModel implements ActionListener, MouseListener, ListModel{
     @Override
    public String toString(){
         StringBuilder s = new StringBuilder();
-        s.append(popName).append("(").append(samples.size()).append(" samples, ").append(getLength()).append(" loci)");
+        s.append(popName).append(" (").append(samples.size()).append(" samples, ").append(getLength()).append(" loci)");
        return s.toString();
 
    }

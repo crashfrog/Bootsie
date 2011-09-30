@@ -5,11 +5,16 @@
 package bootsie;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.jdesktop.application.Action;
@@ -171,11 +176,27 @@ public class BootsieApp extends SingleFrameApplication {
       //dispatch computation threads
    }
 
-   void exportFile(File file, StringBuilder export) {
-      throw new UnsupportedOperationException("Not yet implemented");
-   }
+   
+    void exportFile(File file, StringBuilder export) {
+        Charset charset = Charset.forName("US-ASCII");
+        try {
+            boolean b = file.createNewFile();
+            BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+            String s = export.toString();
+            writer.write(s, 0, s.length());
+            BootsieApp.getApplication().report("Wrote " + file.getName() + ".");
+            writer.close();
+        } catch (IOException x) {
+            BootsieApp.getApplication().report("An error occured while writing " + file.getName() + ":");
+            BootsieApp.getApplication().report(x.toString());
+        }
+    }
 
-   void exportFiles(File file, ArrayList<StringBuilder> exports) {
-      throw new UnsupportedOperationException("Not yet implemented");
+   void exportFiles(ArrayList<File> files, ArrayList<StringBuilder> exports) {
+      Iterator<StringBuilder> ie = exports.iterator();
+      Iterator<File> it = files.iterator();
+      while (it.hasNext()){
+          exportFile(it.next(), ie.next());
+      }
    }
 }
