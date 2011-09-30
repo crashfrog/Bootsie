@@ -19,7 +19,7 @@ public class NtsysDataExporter extends DataExporter {
    private static String fileExtention = ".txt";
 
    private static String header = "";
-   private static String nullChar = "?";
+   private static String nullChar = "9";
    private static String delimitChar = "\t";
 
    @Override
@@ -40,8 +40,8 @@ public class NtsysDataExporter extends DataExporter {
             export.append(generateString(it.next()));
             exports.add(export);
          }
-
-         BootsieApp.getApplication().exportFiles(file, exports);
+         ArrayList<File> files = new ArrayList<File>();
+         BootsieApp.getApplication().exportFiles(files, exports);
       }
       
       
@@ -49,25 +49,29 @@ public class NtsysDataExporter extends DataExporter {
    }
 
    @Override
-   public StringBuilder generateString(PopulationMatrixModel data) {
-      StringBuilder export = new StringBuilder();
-      Iterator<DataSample> it = data.iterator();
-      while(it.hasNext()){
-         DataSample s = it.next();
-         ArrayList<Byte> loci = s.getLoci();
-         Iterator<Byte> i = loci.iterator();
-         while(i.hasNext()){
-            Byte b = i.next();
-            if (b != 0 && b != 1){
-               export.append(nullChar);
-            } else {
-               export.append(b.toString());
+    public StringBuilder generateString(PopulationMatrixModel data) {
+        StringBuilder export = new StringBuilder();
+        Iterator<DataSample> it = data.iterator();
+        int sample = 0;
+        export.append("1 ").append(data.getSize()).append(" ").append(data.getLength()).append(" 1 9\n");
+        while (it.hasNext()) {
+            sample++;
+            DataSample s = it.next();
+            ArrayList<Byte> loci = s.getLoci();
+            Iterator<Byte> i = loci.iterator();
+            export.append(sample).append(delimitChar);
+            while (i.hasNext()) {
+                Byte b = i.next();
+                if (b != 0 && b != 1) {
+                    export.append(nullChar);
+                } else {
+                    export.append(b.toString());
+                }
+                export.append(delimitChar);
             }
-            export.append(delimitChar);
-         }
-         export.append("\n");
-      }
-      return export;
+            export.append("\n");
+        }
+        return export;
    }
 
    @Override

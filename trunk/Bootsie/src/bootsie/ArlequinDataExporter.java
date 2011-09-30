@@ -22,10 +22,22 @@ public class ArlequinDataExporter extends DataExporter {
 
    @Override
    public void dataExport(File file, ArrayList<PopulationMatrixModel> data, Boolean combine) {
+      /*
+       if (file.getName().contains(fileExtention)){
+          //do nothing
+      } else {
+          file = new File(file, file.getName() + fileExtention);
+      }
+       */
       StringBuilder export = new StringBuilder(header);
-      export.append("\tNbSamples=");
-      //append NbSamples
-      export.append("\tGenotypicData=0\n\tGameticPhase=1\n\tLocusSeparator=NONE\n\tRecessiveData=0\n\tMissingData=\'.\'\n\n[Data]\n\n[[Samples]]\n\n");
+      export.append("\tNbSamples=").append(data.size());
+      export.append("\n\tDataType=RFLP\n\tGenotypicData=0\n\tGameticPhase=1\n\tLocusSeparator=NONE\n\tRecessiveData=0\n\tMissingData=\'.\'\n\n[Data]\n\n[[Samples]]\n\n");
+      Iterator<PopulationMatrixModel> it = data.iterator();
+      while (it.hasNext()){
+          export.append(generateString(it.next()));
+      }
+      
+      BootsieApp.getApplication().exportFile(file, export);
       
    }
 
@@ -33,8 +45,8 @@ public class ArlequinDataExporter extends DataExporter {
    public StringBuilder generateString(PopulationMatrixModel data) {
       StringBuilder export = new StringBuilder();
       export.append("\tSampleName=\"" + data.getName() + "\"\n");
-      export.append("\tSampleSize= " + data.getLength() + "\n");
-      export.append("\tSampleData = {");
+      export.append("\tSampleSize= " + data.getSize() + "\n");
+      export.append("\tSampleData = {\n");
       Iterator<DataSample> it = data.iterator();
       while(it.hasNext()){
          DataSample s = it.next();

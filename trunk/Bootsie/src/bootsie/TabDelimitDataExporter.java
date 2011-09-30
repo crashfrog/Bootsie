@@ -39,8 +39,8 @@ public class TabDelimitDataExporter extends DataExporter {
             export.append(generateString(it.next()));
             exports.add(export);
          }
-
-         BootsieApp.getApplication().exportFiles(file, exports);
+         ArrayList<File> files = new ArrayList<File>();
+         BootsieApp.getApplication().exportFiles(files, exports);
       }
    }
 
