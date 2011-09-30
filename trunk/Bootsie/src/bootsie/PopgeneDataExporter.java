@@ -75,7 +75,7 @@ public class PopgeneDataExporter extends DataExporter {
             }
             //export.append(delimitChar);
          }
-         export.append("\n");
+         export.append("\n\n");
       }
       return export;
    }

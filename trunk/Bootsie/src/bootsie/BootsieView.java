@@ -139,14 +139,15 @@ public class BootsieView extends FrameView {
 
         menuBar = new javax.swing.JMenuBar();
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
-        FileOpen = new javax.swing.JMenuItem();
+        openMenuItem = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         javax.swing.JMenuItem exitMenuItem = new javax.swing.JMenuItem();
         ExportMenu = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenuItem4 = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
+        exportPopgene = new javax.swing.JMenuItem();
+        exportNtsys = new javax.swing.JMenuItem();
+        exportArlequin = new javax.swing.JMenuItem();
+        exportPaup = new javax.swing.JMenuItem();
+        exportTab = new javax.swing.JMenuItem();
         javax.swing.JMenu helpMenu = new javax.swing.JMenu();
         javax.swing.JMenuItem aboutMenuItem = new javax.swing.JMenuItem();
         statusPanel = new javax.swing.JPanel();
@@ -165,14 +166,14 @@ public class BootsieView extends FrameView {
         fileMenu.setText(resourceMap.getString("fileMenu.text")); // NOI18N
         fileMenu.setName("fileMenu"); // NOI18N
 
-        FileOpen.setText(resourceMap.getString("FileOpen.text")); // NOI18N
-        FileOpen.setName("FileOpen"); // NOI18N
-        FileOpen.addActionListener(new java.awt.event.ActionListener() {
+        openMenuItem.setText(resourceMap.getString("openMenuItem.text")); // NOI18N
+        openMenuItem.setName("openMenuItem"); // NOI18N
+        openMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                FileOpenActionPerformed(evt);
+                openMenuItemActionPerformed(evt);
             }
         });
-        fileMenu.add(FileOpen);
+        fileMenu.add(openMenuItem);
 
         jSeparator1.setName("jSeparator1"); // NOI18N
         fileMenu.add(jSeparator1);
@@ -188,45 +189,50 @@ public class BootsieView extends FrameView {
         ExportMenu.setEnabled(false);
         ExportMenu.setName("ExportMenu"); // NOI18N
 
-        jMenuItem1.setText(resourceMap.getString("jMenuItem1.text")); // NOI18N
-        jMenuItem1.setActionCommand(resourceMap.getString("jMenuItem1.actionCommand")); // NOI18N
-        jMenuItem1.setName("jMenuItem1"); // NOI18N
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        exportPopgene.setText(resourceMap.getString("exportPopgene.text")); // NOI18N
+        exportPopgene.setActionCommand(resourceMap.getString("exportPopgene.actionCommand")); // NOI18N
+        exportPopgene.setName("exportPopgene"); // NOI18N
+        exportPopgene.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 exportToPopgen(evt);
             }
         });
-        ExportMenu.add(jMenuItem1);
+        ExportMenu.add(exportPopgene);
 
-        jMenuItem2.setText(resourceMap.getString("jMenuItem2.text")); // NOI18N
-        jMenuItem2.setActionCommand(resourceMap.getString("jMenuItem2.actionCommand")); // NOI18N
-        jMenuItem2.setName("jMenuItem2"); // NOI18N
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+        exportNtsys.setText(resourceMap.getString("exportNtsys.text")); // NOI18N
+        exportNtsys.setActionCommand(resourceMap.getString("exportNtsys.actionCommand")); // NOI18N
+        exportNtsys.setName("exportNtsys"); // NOI18N
+        exportNtsys.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 exportToNtsys(evt);
             }
         });
-        ExportMenu.add(jMenuItem2);
+        ExportMenu.add(exportNtsys);
 
-        jMenuItem4.setText(resourceMap.getString("jMenuItem4.text")); // NOI18N
-        jMenuItem4.setActionCommand(resourceMap.getString("jMenuItem4.actionCommand")); // NOI18N
-        jMenuItem4.setName("jMenuItem4"); // NOI18N
-        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+        exportArlequin.setText(resourceMap.getString("exportArlequin.text")); // NOI18N
+        exportArlequin.setActionCommand(resourceMap.getString("exportArlequin.actionCommand")); // NOI18N
+        exportArlequin.setName("exportArlequin"); // NOI18N
+        exportArlequin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 exportToArl(evt);
             }
         });
-        ExportMenu.add(jMenuItem4);
+        ExportMenu.add(exportArlequin);
 
-        jMenuItem3.setText(resourceMap.getString("jMenuItem3.text")); // NOI18N
-        jMenuItem3.setActionCommand(resourceMap.getString("jMenuItem3.actionCommand")); // NOI18N
-        jMenuItem3.setName("jMenuItem3"); // NOI18N
-        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+        exportPaup.setText(resourceMap.getString("exportPaup.text")); // NOI18N
+        exportPaup.setActionCommand(resourceMap.getString("exportPaup.actionCommand")); // NOI18N
+        exportPaup.setName("exportPaup"); // NOI18N
+        ExportMenu.add(exportPaup);
+
+        exportTab.setText(resourceMap.getString("exportTab.text")); // NOI18N
+        exportTab.setActionCommand(resourceMap.getString("exportTab.actionCommand")); // NOI18N
+        exportTab.setName("exportTab"); // NOI18N
+        exportTab.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 exportAsTabs(evt);
             }
         });
-        ExportMenu.add(jMenuItem3);
+        ExportMenu.add(exportTab);
 
         menuBar.add(ExportMenu);
 
@@ -311,12 +317,12 @@ public class BootsieView extends FrameView {
         setStatusBar(statusPanel);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void FileOpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FileOpenActionPerformed
+    private void openMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openMenuItemActionPerformed
        openFile();
        EstimationReportLabel.setText("Estimating...");
        GoButton.setEnabled(true);
        ExportMenu.setEnabled(true);
-    }//GEN-LAST:event_FileOpenActionPerformed
+    }//GEN-LAST:event_openMenuItemActionPerformed
 
     private void exportToPopgen(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportToPopgen
        // TODO add your handling code here:
@@ -346,16 +352,17 @@ public class BootsieView extends FrameView {
     private javax.swing.JPanel DataSetPane;
     private javax.swing.JLabel EstimationReportLabel;
     private javax.swing.JMenu ExportMenu;
-    private javax.swing.JMenuItem FileOpen;
     private javax.swing.JButton GoButton;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem exportArlequin;
+    private javax.swing.JMenuItem exportNtsys;
+    private javax.swing.JMenuItem exportPaup;
+    private javax.swing.JMenuItem exportPopgene;
+    private javax.swing.JMenuItem exportTab;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JMenuBar menuBar;
+    private javax.swing.JMenuItem openMenuItem;
     private javax.swing.JTextArea reportArea;
     private javax.swing.JLabel statusAnimationLabel;
     private javax.swing.JLabel statusMessageLabel;
