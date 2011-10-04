@@ -237,9 +237,13 @@
               <action class="bootsie.BootsieApp" id="beginAnalysis" methodName="beginAnalysis"/>
             </Property>
             <Property name="text" type="java.lang.String" resourceKey="GoButton.text"/>
+            <Property name="actionCommand" type="java.lang.String" resourceKey="GoButton.actionCommand"/>
             <Property name="enabled" type="boolean" value="false"/>
             <Property name="name" type="java.lang.String" value="GoButton" noResource="true"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="beginAnalysis"/>
+          </Events>
         </Component>
         <Container class="javax.swing.JScrollPane" name="jScrollPane1">
           <Properties>

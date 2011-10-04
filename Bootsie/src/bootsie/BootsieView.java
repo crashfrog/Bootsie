@@ -123,6 +123,10 @@ public class BootsieView extends FrameView {
       if (returnVal == JFileChooser.APPROVE_OPTION) {
          File[] files = fc.getSelectedFiles();
          BootsieApp.parseFile(files);
+         EstimationReportLabel.setText("Estimating...");
+         GoButton.setEnabled(true);
+         ExportMenu.setEnabled(true);
+         new Thread(new BootsieEstimator()).start();
       }
    }
 
@@ -266,8 +270,14 @@ public class BootsieView extends FrameView {
 
         GoButton.setAction(actionMap.get("beginAnalysis")); // NOI18N
         GoButton.setText(resourceMap.getString("GoButton.text")); // NOI18N
+        GoButton.setActionCommand(resourceMap.getString("GoButton.actionCommand")); // NOI18N
         GoButton.setEnabled(false);
         GoButton.setName("GoButton"); // NOI18N
+        GoButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                beginAnalysis(evt);
+            }
+        });
 
         jScrollPane1.setName("jScrollPane1"); // NOI18N
 
@@ -319,34 +329,45 @@ public class BootsieView extends FrameView {
 
     private void openMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openMenuItemActionPerformed
        openFile();
-       EstimationReportLabel.setText("Estimating...");
-       GoButton.setEnabled(true);
-       ExportMenu.setEnabled(true);
+       
     }//GEN-LAST:event_openMenuItemActionPerformed
 
     private void exportToPopgen(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportToPopgen
-       // TODO add your handling code here:
+       
        ExportDialog exportDialog = new ExportDialog(this.getFrame(), true, new PopgeneDataExporter());
        exportDialog.setVisible(true);
     }//GEN-LAST:event_exportToPopgen
 
     private void exportToNtsys(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportToNtsys
-       // TODO add your handling code here:
+       
        ExportDialog exportDialog = new ExportDialog(this.getFrame(), true, new NtsysDataExporter());
        exportDialog.setVisible(true);
     }//GEN-LAST:event_exportToNtsys
 
     private void exportToArl(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportToArl
-       // TODO add your handling code here:
+      
        ExportDialog exportDialog = new ExportDialog(this.getFrame(), true, new ArlequinDataExporter());
        exportDialog.setVisible(true);
     }//GEN-LAST:event_exportToArl
 
     private void exportAsTabs(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportAsTabs
-       // TODO add your handling code here:
+       
        ExportDialog exportDialog = new ExportDialog(this.getFrame(), true, new TabDelimitDataExporter());
        exportDialog.setVisible(true);
     }//GEN-LAST:event_exportAsTabs
+
+    private void beginAnalysis(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_beginAnalysis
+        PopulationMatrixModelCollection.getInstance().sendGlobalActionEvent(evt);
+        GoButton.setEnabled(false);
+        openMenuItem.setEnabled(false);
+        DataSetMasterPanel.getInstance().setVisible(false);
+        GoButton.setText("Analyzing...");
+        try {
+            BootsieBootstrapper.getInstance().start();
+        } catch (Exception ex){
+            BootsieApp.getApplication().report("Unable to begin computation.");
+        }
+    }//GEN-LAST:event_beginAnalysis
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel DataSetPane;
@@ -382,4 +403,12 @@ public class BootsieView extends FrameView {
       reportArea.append(s);
       reportArea.append("\n");
    }
+   
+   void setEstimate(String s){
+       EstimationReportLabel.setText(s);
+   }
+
+    void finished() {
+        GoButton.setVisible(false);
+    }
 }

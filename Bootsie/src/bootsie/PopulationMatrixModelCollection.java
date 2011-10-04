@@ -5,7 +5,9 @@
 
 package bootsie;
 
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+import java.util.Iterator;
 import javax.swing.ListModel;
 import javax.swing.event.ListDataListener;
 
@@ -21,6 +23,13 @@ public final class PopulationMatrixModelCollection implements ListModel {
    
    private PopulationMatrixModelCollection(){
       //boring constructor
+   }
+   
+   public void sendGlobalActionEvent(ActionEvent ex){
+       Iterator<PopulationMatrixModel> it = populations.iterator();
+       while (it.hasNext()){
+           it.next().actionPerformed(ex);
+       }
    }
 
    private static PopulationMatrixModelCollection instance;
@@ -38,6 +47,10 @@ public final class PopulationMatrixModelCollection implements ListModel {
 
     public int getSize() {
         return populations.size();
+    }
+    
+    public Iterator<PopulationMatrixModel> iterator(){
+        return populations.iterator();
     }
 
     public Object getElementAt(int index) {

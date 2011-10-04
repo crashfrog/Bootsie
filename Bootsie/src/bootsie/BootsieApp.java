@@ -12,7 +12,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.regex.Matcher;
@@ -29,7 +28,11 @@ public class BootsieApp extends SingleFrameApplication {
     /**
      * At startup create and show the main frame of the application.
      */
+    //environment variables. TODO: read and write these as "preferences"
+    
    public BootsieView view;
+   public static final int defaultNumBootstraps = 100;
+   public static final int defaultNumThreads = 2;
 
     @Override protected void startup() {
         view = new BootsieView(this);
@@ -43,6 +46,10 @@ public class BootsieApp extends SingleFrameApplication {
 
    public void report(String s){
       view.addReport(s);
+   }
+   
+   public void estimate(String s){
+       view.setEstimate(s);
    }
 
     /**
@@ -198,5 +205,19 @@ public class BootsieApp extends SingleFrameApplication {
       while (it.hasNext()){
           exportFile(it.next(), ie.next());
       }
+   }
+   
+   public static String calculateElapsed(long timeInMilis) {
+      int hours, minutes, seconds;
+      int timeInSeconds = (int) (timeInMilis / 1000);
+      hours = timeInSeconds / 3600;
+      timeInSeconds = timeInSeconds - (hours * 3600);
+      minutes = timeInSeconds / 60;
+      timeInSeconds = timeInSeconds - (minutes * 60);
+      seconds = timeInSeconds;
+      return hours + " hour(s) " + minutes + " minute(s) " + seconds + " second(s).";
+      //return new Long(timeInMilis).toString();
+      //return hours + " hour(s) " + minutes + " minute(s).";
+      
    }
 }
