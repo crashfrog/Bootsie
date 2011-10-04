@@ -39,6 +39,7 @@ public class DataViewer extends javax.swing.JFrame {
         t.append("Population name: " + d.popName + "\n");
         t.append(d.getSize() + " samples\n");
         t.append(new Integer(d.getLength()).toString() + " loci\n");
+        t.append("Bootstrap setting = " + d.numBootstraps + " bootstraps.\n");
         Iterator<DataSample> it = d.iterator();
         while (it.hasNext()){
             DataSample s = it.next();

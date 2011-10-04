@@ -12,7 +12,7 @@ import java.util.Iterator;
  * @author Justin Payne
  */
 public abstract class MathCore {
-    
+    //catch-all class of static methods for these statistical tests.
     
     public static double locusCoV(ArrayList <Byte>loci){
         double cov = 0;
@@ -40,6 +40,57 @@ public abstract class MathCore {
         }
         mean /= loci.size();
         return mean;
+    }
+    
+    public static ArrayList<Byte> getBootstrap(PopulationMatrixModel data, int bootstrapVal){
+        ArrayList<Byte> bootstrapLoci = new ArrayList<Byte>();
+        ArrayList<Integer> picks = new ArrayList<Integer>();
+        int lociSize = data.getLength();
+        for (int i = 0; i < bootstrapVal; i++){
+            picks.add(new Integer((int) (Math.random() * lociSize)));
+        }
+        Iterator<Integer> it = picks.iterator();
+        while (it.hasNext()){
+            bootstrapLoci.addAll(data.getAllNthLoci(it.next()));
+        }
+        
+        return bootstrapLoci;
+    }
+    
+    public static void bootstrapCoefficientOfVariance(PopulationMatrixModel data, BootstrapMonitor monitor){
+        monitor.startingOp();
+        ArrayList<Double> covArray = new ArrayList<Double>();
+        int lociSize = data.getLength();
+        for (int i = 1; i <= lociSize; i++){
+            double covLocus = 0;
+            int n;
+            for (n = 1; n <= data.numBootstraps; n++){
+                covLocus += MathCore.locusCoV(MathCore.getBootstrap(data, i));
+            }
+            covLocus = covLocus / (n - 1);
+            covArray.add(covLocus);
+            monitor.completeOneOp();
+        }
+        
+        data.coefficientsOfVariation = covArray;
+        monitor.completeAllOps();
+    }
+    
+    public static ArrayList<Double> bootstrapCovTest(PopulationMatrixModel data, int numTests){
+        //estimator function. Has to return actual CoV values to evade compiler optimization.
+        ArrayList<Double> covArray = new ArrayList<Double>();
+        int lociSize = data.getLength();
+        int halfSize = (lociSize + 1) / 2;
+        double covLocus = 0;
+        int n;
+        for (n = 0; n < numTests; n++) {
+            covLocus += MathCore.locusCoV(MathCore.getBootstrap(data, halfSize));
+        }
+        covLocus = covLocus / n;
+        covArray.add(covLocus);
+
+
+        return covArray;
     }
     
 }

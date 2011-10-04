@@ -12,10 +12,14 @@
 package bootsie;
 
 import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Paint;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.geom.Rectangle2D;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JRadioButton;
@@ -27,6 +31,9 @@ import javax.swing.border.Border;
  * @author jpayne
  */
 public class DataSetPanel extends javax.swing.JPanel {
+    
+    boolean isComputing = false;
+    double computingProgress = 0;
 
     /** Creates new form DataSetPanel */
    public DataSetPanel(){
@@ -44,6 +51,7 @@ public class DataSetPanel extends javax.swing.JPanel {
          public void actionPerformed(ActionEvent e) {
             JTextField f = (JTextField) e.getSource();
             NumBootstraps.setText(f.getText());
+            NumBootstraps.postActionEvent();
          }
 
         });
@@ -93,20 +101,51 @@ public class DataSetPanel extends javax.swing.JPanel {
        addMouseListener(m);
     }
 
-    public void displayBeginComputation(){
+    public void displayWaitingComputation(){
        PlotCVSVG.setVisible(false);
        PlotCVPNG.setVisible(false);
        PlotCVNone.setVisible(false);
+       PlotCVGroupLabel.setText("Waiting...");
        NumBootstraps.setEditable(false);
+       
+    }
+    
+    public void displayBeginComputation(){
+        isComputing = true;
+        PlotCVGroupLabel.setText("Working.");
     }
 
-    public void displayComputationProgress(int i){
-       //int 1 < 1000 for progress bar
+    public void displayComputationProgress(double d){
+       computingProgress = d;
+       this.repaint();
     }
 
     public void displayFinishedComputation(){
-
+        isComputing = false;
+        NumBootLabel.setVisible(false);
+        NumBootstraps.setVisible(false);
+        PlotCVGroupLabel.setText("Finished.");
+        this.repaint();
     }
+
+    @Override
+    public void paintComponent(Graphics g) {
+        this.setOpaque(isComputing);
+        NumBootstraps.setOpaque(false);
+        if (isComputing){
+            //display 
+            Graphics2D graphics = (Graphics2D) g;
+            
+            
+            graphics.setPaint(Color.green);
+            graphics.fill(new Rectangle2D.Double(0, 0, new Double(this.getSize().width * computingProgress), new Double(this.getSize().height)));           
+            //super.paint(g);
+        } else {
+            super.paintComponent(g);
+        }
+    }
+    
+    
 
 
     @SuppressWarnings("unchecked")
@@ -148,7 +187,7 @@ public class DataSetPanel extends javax.swing.JPanel {
       PlotCVSVG.setActionCommand("setPlotterSVG");
       PlotCVSVG.setOpaque(false);
 
-      NumBootstraps.setText(resourceMap.getString("NumBootstraps.text")); // NOI18N
+      NumBootstraps.setText(new Integer(BootsieApp.defaultNumBootstraps).toString()); // NOI18N
       NumBootstraps.setName("NumBootstraps"); // NOI18N
       NumBootstraps.setActionCommand("setNumBootstraps");
 

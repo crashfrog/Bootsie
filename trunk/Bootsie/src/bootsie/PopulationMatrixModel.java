@@ -24,9 +24,9 @@ class PopulationMatrixModel implements ActionListener, MouseListener, ListModel{
    private DataSetPanel panel;
    protected PlotterType plotter = PlotterType.NO_PLOTTER;
    protected String popName;
-   int numBootstraps = 1000;
+   protected int numBootstraps = BootsieApp.defaultNumBootstraps;
    int numLoci = 0;
-   private ArrayList coefficientsOfVariation;
+   protected ArrayList coefficientsOfVariation;
 
    public PlotterType getPlotterType(){
       return plotter;
@@ -64,6 +64,7 @@ class PopulationMatrixModel implements ActionListener, MouseListener, ListModel{
       if (e.getActionCommand().equals("setNumBootstraps")){
          JTextField field = (JTextField) e.getSource();
          numBootstraps = Integer.parseInt(field.getText());
+         new Thread(new BootsieEstimator()).start();
       } else if (e.getActionCommand().equals("setPlotterNone")){
          plotter = PlotterType.NO_PLOTTER;
       } else if (e.getActionCommand().equals("setPlotterSVG")){
@@ -71,10 +72,21 @@ class PopulationMatrixModel implements ActionListener, MouseListener, ListModel{
       } else if (e.getActionCommand().equals("setPlotterPNG")){
          plotter = PlotterType.PNG_PLOTTER;
       
+      } else if (e.getActionCommand().equals("beginAnalysis")){
+          //tell panel to indicate beginning of analysis
+          panel.displayWaitingComputation();
+      } else if (e.getActionCommand().equals("updateAnalysis")){
+          BootstrapMonitor monitor = (BootstrapMonitor) e.getSource();
+          panel.displayComputationProgress(monitor.getComputingProgress());
+      } else if (e.getActionCommand().equals("completeAnalysis")){
+          panel.displayFinishedComputation();
+          createPlot();
+      } else if (e.getActionCommand().equals("beginComputation")){
+          panel.displayBeginComputation();
       }
    }
    
-   public ArrayList getAllNthLoci(int n){
+   public ArrayList getAllNthLoci(Integer n){
        ArrayList loci = new <Byte>ArrayList();
        Iterator<DataSample> it = samples.iterator();
        while(it.hasNext()){
@@ -156,6 +168,19 @@ class PopulationMatrixModel implements ActionListener, MouseListener, ListModel{
 
     public void removeListDataListener(ListDataListener l) {
         
+    }
+
+    private void createPlot() {
+        Plotter plot;
+        if (plotter == PlotterType.PNG_PLOTTER){
+            plot = new PNGPlotter();
+            plot.plotVariance(this);
+            plot.savePlot();
+        } else if (plotter == PlotterType.SVG_PLOTTER){
+            plot = new SVGPlotter();
+            plot.plotVariance(this);
+            plot.savePlot();
+        }
     }
 
 }
