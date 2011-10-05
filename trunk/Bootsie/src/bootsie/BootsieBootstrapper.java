@@ -43,6 +43,7 @@ public class BootsieBootstrapper extends Thread {
     
     @Override
    public void run() {
+      BootsieApp.getApplication().createReportDirectory();
       Calendar startedTime = Calendar.getInstance();
       Iterator<Thread> threadsIterator = computationThreads.iterator();
       while(threadsIterator.hasNext() || numRunning > 0){

@@ -26,7 +26,7 @@ class PopulationMatrixModel implements ActionListener, MouseListener, ListModel{
    protected String popName;
    protected int numBootstraps = BootsieApp.defaultNumBootstraps;
    int numLoci = 0;
-   protected ArrayList coefficientsOfVariation;
+   protected ArrayList<Double> coefficientsOfVariation;
 
    public PlotterType getPlotterType(){
       return plotter;
@@ -80,6 +80,7 @@ class PopulationMatrixModel implements ActionListener, MouseListener, ListModel{
           panel.displayComputationProgress(monitor.getComputingProgress());
       } else if (e.getActionCommand().equals("completeAnalysis")){
           panel.displayFinishedComputation();
+          saveCoV();
           createPlot();
       } else if (e.getActionCommand().equals("beginComputation")){
           panel.displayBeginComputation();
@@ -181,6 +182,16 @@ class PopulationMatrixModel implements ActionListener, MouseListener, ListModel{
             plot.plotVariance(this);
             plot.savePlot();
         }
+    }
+
+    private void saveCoV() {
+        StringBuilder export = new StringBuilder();
+        //make tab-delimited export of CoV data
+        int i = 0;
+        for (Double cov: coefficientsOfVariation){
+            export.append(++i).append("\t").append(cov).append("\n");
+        }
+        BootsieApp.getApplication().exportToReportDirectory(export, this.popName, "cov.text");
     }
 
 }

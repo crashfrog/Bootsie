@@ -13,6 +13,7 @@ import java.util.Iterator;
  */
 public abstract class MathCore {
     //catch-all class of static methods for these statistical tests.
+    //re-write this in most pseudo-code-like syntax - try to avoid "Java-ese."
     
     public static double locusCoV(ArrayList <Byte>loci){
         double cov = 0;
