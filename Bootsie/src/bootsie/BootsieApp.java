@@ -4,6 +4,7 @@
 
 package bootsie;
 
+import java.awt.Image;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -12,8 +13,14 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.jdesktop.application.Action;
@@ -33,6 +40,7 @@ public class BootsieApp extends SingleFrameApplication {
    public BootsieView view;
    public static final int defaultNumBootstraps = 100;
    public static final int defaultNumThreads = 2;
+   File exportDirectory;
 
     @Override protected void startup() {
         view = new BootsieView(this);
@@ -191,7 +199,7 @@ public class BootsieApp extends SingleFrameApplication {
             BufferedWriter writer = new BufferedWriter(new FileWriter(file));
             String s = export.toString();
             writer.write(s, 0, s.length());
-            BootsieApp.getApplication().report("Wrote " + file.getName() + ".");
+            BootsieApp.getApplication().report("Wrote " + file.toString() + ".");
             writer.close();
         } catch (IOException x) {
             BootsieApp.getApplication().report("An error occured while writing " + file.getName() + ":");
@@ -220,4 +228,42 @@ public class BootsieApp extends SingleFrameApplication {
       //return hours + " hour(s) " + minutes + " minute(s).";
       
    }
+   
+   void createReportDirectory(){
+       String defaultDir = System.getProperty("user.home");
+
+       DateFormat formatter = new SimpleDateFormat("MMM d, hh-mm a");
+       String timeStamp = formatter.format(new Date());
+       exportDirectory = new File(defaultDir + "/My Documents/" + timeStamp + "/");
+       BootsieApp.getApplication().report("Making report directory at " + exportDirectory.toString() + ".");
+       boolean b;
+       
+            b = exportDirectory.mkdir();
+        
+   }
+
+    void exportToReportDirectory(StringBuilder export, String dirName, String fileName) {
+        exportToReportDirectory(export.toString(), dirName, fileName);
+    }
+
+    private void exportToReportDirectory(String export, String dirName, String filename) {
+        File exportFile = new File(exportDirectory, dirName + "/" + filename);
+        try {
+            System.out.println("Writing " + exportFile.toString());
+            new File(exportDirectory + "/" + dirName).mkdir();
+            exportFile.createNewFile();
+            BufferedWriter writer = new BufferedWriter(new FileWriter(exportFile));
+            String s = export.toString();
+            writer.write(s, 0, s.length());
+            BootsieApp.getApplication().report("Wrote " + exportFile.toString() + ".");
+            writer.close();
+        } catch (IOException ex) {
+            Logger.getLogger(BootsieApp.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       
+    }
+    
+    void exportToReportDirectory(Image image, String dirName, String filename){
+        
+    }
 }

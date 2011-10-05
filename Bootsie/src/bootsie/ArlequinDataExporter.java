@@ -22,13 +22,11 @@ public class ArlequinDataExporter extends DataExporter {
 
    @Override
    public void dataExport(File file, ArrayList<PopulationMatrixModel> data, Boolean combine) {
-      /*
+
        if (file.getName().contains(fileExtention)){
-          //do nothing
       } else {
-          file = new File(file, file.getName() + fileExtention);
+          file = new File(file.toString() + fileExtention);
       }
-       */
       StringBuilder export = new StringBuilder(header);
       export.append("\tNbSamples=").append(data.size());
       export.append("\n\tDataType=RFLP\n\tGenotypicData=0\n\tGameticPhase=1\n\tLocusSeparator=NONE\n\tRecessiveData=0\n\tMissingData=\'.\'\n\n[Data]\n\n[[Samples]]\n\n");
