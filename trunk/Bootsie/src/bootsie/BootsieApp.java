@@ -23,6 +23,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileSystemView;
 import org.jdesktop.application.Action;
 import org.jdesktop.application.Application;
 import org.jdesktop.application.SingleFrameApplication;
@@ -230,16 +232,17 @@ public class BootsieApp extends SingleFrameApplication {
    }
    
    void createReportDirectory(){
-       String defaultDir = System.getProperty("user.home");
+      DateFormat formatter = new SimpleDateFormat("MMM d, hh-mm a");
+      String timeStamp = formatter.format(new Date());
+      JFileChooser fr = new JFileChooser();
+      FileSystemView fw = fr.getFileSystemView();
+      File documents = fw.getDefaultDirectory();
+      exportDirectory = new File(documents, "/Bootsie Output/" + timeStamp + "/");
+      BootsieApp.getApplication().report("Making report directory at " + exportDirectory.toString() + ".");
+      boolean b;
 
-       DateFormat formatter = new SimpleDateFormat("MMM d, hh-mm a");
-       String timeStamp = formatter.format(new Date());
-       exportDirectory = new File(defaultDir + "/My Documents/" + timeStamp + "/");
-       BootsieApp.getApplication().report("Making report directory at " + exportDirectory.toString() + ".");
-       boolean b;
-       
-            b = exportDirectory.mkdir();
-        
+      b = exportDirectory.mkdirs();
+
    }
 
     void exportToReportDirectory(StringBuilder export, String dirName, String fileName) {

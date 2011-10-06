@@ -44,9 +44,9 @@ public class PNGPlotter extends BufferedImage implements Plotter {
       int size = data.coefficientsOfVariation.size();
       float offsetX;
       
-      Iterator<Float> it = data.coefficientsOfVariation.iterator();
+      Iterator<Double> it = data.coefficientsOfVariation.iterator();
       while (it.hasNext()){
-         Float cov = it.next();
+         Double cov = it.next();
       }
    }
 
