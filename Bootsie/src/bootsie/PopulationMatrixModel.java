@@ -191,7 +191,7 @@ class PopulationMatrixModel implements ActionListener, MouseListener, ListModel{
         for (Double cov: coefficientsOfVariation){
             export.append(++i).append("\t").append(cov).append("\n");
         }
-        BootsieApp.getApplication().exportToReportDirectory(export, this.popName, "cov.text");
+        BootsieApp.getApplication().exportToReportDirectory(export, this.popName, "cov.txt");
     }
 
 }
