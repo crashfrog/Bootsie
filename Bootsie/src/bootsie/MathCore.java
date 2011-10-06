@@ -68,7 +68,7 @@ public abstract class MathCore {
             for (n = 1; n <= data.numBootstraps; n++){
                 covLocus += MathCore.locusCoV(MathCore.getBootstrap(data, i));
             }
-            covLocus = covLocus / (n - 1);
+            covLocus = covLocus / n;
             covArray.add(covLocus);
             monitor.completeOneOp();
         }

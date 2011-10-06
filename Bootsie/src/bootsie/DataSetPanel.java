@@ -59,7 +59,8 @@ public class DataSetPanel extends javax.swing.JPanel {
 
          public void actionPerformed(ActionEvent e) {
             JRadioButton b = (JRadioButton) e.getSource();
-            PlotCVNone.setSelected(b.isSelected());
+            //PlotCVNone.setSelected(b.isSelected());
+            PlotCVNone.doClick();
          }
 
         });
@@ -68,7 +69,7 @@ public class DataSetPanel extends javax.swing.JPanel {
 
          public void actionPerformed(ActionEvent e) {
             JRadioButton b = (JRadioButton) e.getSource();
-            PlotCVSVG.setSelected(b.isSelected());
+            PlotCVSVG.doClick();
          }
 
         });
@@ -77,7 +78,7 @@ public class DataSetPanel extends javax.swing.JPanel {
 
          public void actionPerformed(ActionEvent e) {
             JRadioButton b = (JRadioButton) e.getSource();
-            PlotCVPNG.setSelected(b.isSelected());
+            PlotCVPNG.doClick();
          }
 
         });

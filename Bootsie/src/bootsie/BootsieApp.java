@@ -266,7 +266,14 @@ public class BootsieApp extends SingleFrameApplication {
        
     }
     
-    void exportToReportDirectory(Image image, String dirName, String filename){
-        
+    void exportToReportDirectory(java.awt.image.RenderedImage image, String dirName, String filename){
+        File exportFile = new File(exportDirectory, dirName + "/" + filename);
+        System.out.println("Writing " + exportFile.toString());
+        new File(exportDirectory + "/" + dirName).mkdir();
+        try {
+            javax.imageio.ImageIO.write(image, "png", exportFile);
+        } catch (IOException ex) {
+            Logger.getLogger(BootsieApp.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }
