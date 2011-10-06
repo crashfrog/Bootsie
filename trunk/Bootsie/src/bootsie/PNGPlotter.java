@@ -56,3 +56,64 @@ public class PNGPlotter extends BufferedImage implements Plotter {
    }
 
 }
+
+/*
+ void setup(){
+  //setup graph axes
+  size(sizeWidth, sizeHeight);
+  //background(255);
+  stroke(0);
+
+  line(offset, offset, offset, height-offset);
+  line(offset, height-offset, width-offset, height-offset);
+  
+  textFont(loadFont("Labels.vlw"));
+  textAlign(RIGHT);
+  fill(0);
+  int value = 100;
+  
+  int vertSpace = height-(offset*2);
+  int vertLines = 10;
+  int vertLineSpace = vertSpace / vertLines;
+  int horizSpace =  width-(offset*2);
+  int horizLines = 20;
+  int horizLineSpace = horizSpace / horizLines;
+  secsPerHash = (readMinutes * 60) / horizLines;
+  
+  int vertLineY = offset;
+  line(offset, vertLineY, offset-hashLineLength, vertLineY);
+  text(value, offset - 15, offset + 4);
+  vertLineY += vertLineSpace / 2;
+  for (int i = 0; i < vertLines; i++){
+    line(offset, vertLineY, offset-(hashLineLength/2), vertLineY);
+    vertLineY += vertLineSpace / 2;
+    value -= 10;
+    text(value, offset - 15, vertLineY + 4);
+    line(offset, vertLineY, offset-hashLineLength, vertLineY);
+    vertLineY += vertLineSpace / 2;
+  }
+  
+  value = secsPerHash;
+  
+  int horizLineX = offset+horizLineSpace;
+  for (int i = 0; i < horizLines; i++){
+    line(horizLineX, height-offset, horizLineX, height-offset+hashLineLength);
+    text(value, horizLineX + 8, height-offset+hashLineLength + 10);
+    horizLineX += horizLineSpace;
+    value += secsPerHash;
+  }
+  
+  textAlign(CENTER);
+  text(newTitle, (width / 2), (offset/2));
+  
+  thermalColor(targetTemp1);
+  line(offset, tempY(targetTemp1), width-offset, tempY(targetTemp1));
+  thermalColor(targetTemp2);
+  line(offset, tempY(targetTemp2), width-offset, tempY(targetTemp2));
+  thermalColor(targetTemp3);
+  line(offset, tempY(targetTemp3), width-offset, tempY(targetTemp3));
+  
+  strokeWeight(2);
+  stroke(0);
+  reportDeltaX =((float) horizLineSpace / ((float) secsPerHash / readEvery));
+ */
