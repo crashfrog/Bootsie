@@ -174,12 +174,12 @@ class PopulationMatrixModel implements ActionListener, MouseListener, ListModel{
     private void createPlot() {
         Plotter plot;
         if (plotter == PlotterType.PNG_PLOTTER){
-            plot = new PNGPlotter();
-            plot.plotVariance(this);
+            plot = new PNGPlotter(this);
+            plot.plotVariance();
             plot.savePlot();
         } else if (plotter == PlotterType.SVG_PLOTTER){
-            plot = new SVGPlotter();
-            plot.plotVariance(this);
+            plot = new SVGPlotter(this);
+            plot.plotVariance();
             plot.savePlot();
         }
     }
