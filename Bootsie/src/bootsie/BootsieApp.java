@@ -43,6 +43,7 @@ public class BootsieApp extends SingleFrameApplication {
    public static final int defaultNumBootstraps = 100;
    public static final int defaultNumThreads = 2;
    File exportDirectory;
+   public final boolean svgWorks = false;
 
     @Override protected void startup() {
         view = new BootsieView(this);

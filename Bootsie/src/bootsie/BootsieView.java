@@ -30,6 +30,8 @@ public class BootsieView extends FrameView {
         super(app);
 
         initComponents();
+        
+        
 
         // status bar initialization - message timeout, idle icon and busy animation, etc
         ResourceMap resourceMap = getResourceMap();
@@ -153,6 +155,7 @@ public class BootsieView extends FrameView {
         exportPaup = new javax.swing.JMenuItem();
         exportTab = new javax.swing.JMenuItem();
         javax.swing.JMenu helpMenu = new javax.swing.JMenu();
+        helpMenuItem = new javax.swing.JMenuItem();
         javax.swing.JMenuItem aboutMenuItem = new javax.swing.JMenuItem();
         statusPanel = new javax.swing.JPanel();
         statusMessageLabel = new javax.swing.JLabel();
@@ -163,6 +166,9 @@ public class BootsieView extends FrameView {
         GoButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         DataSetPane = new javax.swing.JPanel();
+        helpDialog = new javax.swing.JDialog();
+        helpScrollPane = new javax.swing.JScrollPane();
+        helpTextPane = new javax.swing.JTextPane();
 
         menuBar.setName("menuBar"); // NOI18N
 
@@ -243,8 +249,25 @@ public class BootsieView extends FrameView {
         helpMenu.setText(resourceMap.getString("helpMenu.text")); // NOI18N
         helpMenu.setName("helpMenu"); // NOI18N
 
+        helpMenuItem.setText(resourceMap.getString("helpMenuItem.text")); // NOI18N
+        helpMenuItem.setActionCommand(resourceMap.getString("helpMenuItem.actionCommand")); // NOI18N
+        helpMenuItem.setName("helpMenuItem"); // NOI18N
+        helpMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                helpMenuItemActionPerformed(evt);
+            }
+        });
+        helpMenu.add(helpMenuItem);
+
         aboutMenuItem.setAction(actionMap.get("showAboutBox")); // NOI18N
+        aboutMenuItem.setText(resourceMap.getString("aboutMenuItem.text")); // NOI18N
+        aboutMenuItem.setActionCommand(resourceMap.getString("aboutMenuItem.actionCommand")); // NOI18N
         aboutMenuItem.setName("aboutMenuItem"); // NOI18N
+        aboutMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                showHelpDialog(evt);
+            }
+        });
         helpMenu.add(aboutMenuItem);
 
         menuBar.add(helpMenu);
@@ -272,6 +295,8 @@ public class BootsieView extends FrameView {
         GoButton.setText(resourceMap.getString("GoButton.text")); // NOI18N
         GoButton.setActionCommand(resourceMap.getString("GoButton.actionCommand")); // NOI18N
         GoButton.setEnabled(false);
+        GoButton.setFocusPainted(false);
+        GoButton.setFocusable(false);
         GoButton.setName("GoButton"); // NOI18N
         GoButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -300,7 +325,7 @@ public class BootsieView extends FrameView {
                         .addComponent(statusAnimationLabel))
                     .addGroup(statusPanelLayout.createSequentialGroup()
                         .addComponent(EstimationReportLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 597, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 5, Short.MAX_VALUE)
                         .addComponent(GoButton)))
                 .addContainerGap())
         );
@@ -319,7 +344,36 @@ public class BootsieView extends FrameView {
                         .addComponent(statusMessageLabel)
                         .addComponent(statusAnimationLabel))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(12, 12, 12))
+                .addGap(13, 13, 13))
+        );
+
+        helpDialog.setTitle(resourceMap.getString("Bootsie Help.title")); // NOI18N
+        helpDialog.setName("Bootsie Help"); // NOI18N
+        helpDialog.setType(java.awt.Window.Type.POPUP);
+
+        helpScrollPane.setName("helpScrollPane"); // NOI18N
+
+        helpTextPane.setContentType(resourceMap.getString("helpTextPane.contentType")); // NOI18N
+        helpTextPane.setEditable(false);
+        helpTextPane.setText(resourceMap.getString("helpTextPane.text")); // NOI18N
+        helpTextPane.setName("helpTextPane"); // NOI18N
+        helpScrollPane.setViewportView(helpTextPane);
+
+        javax.swing.GroupLayout helpDialogLayout = new javax.swing.GroupLayout(helpDialog.getContentPane());
+        helpDialog.getContentPane().setLayout(helpDialogLayout);
+        helpDialogLayout.setHorizontalGroup(
+            helpDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(helpDialogLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(helpScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 584, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        helpDialogLayout.setVerticalGroup(
+            helpDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(helpDialogLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(helpScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 390, Short.MAX_VALUE)
+                .addGap(36, 36, 36))
         );
 
         setComponent(statusPanel);
@@ -369,6 +423,16 @@ public class BootsieView extends FrameView {
         }
     }//GEN-LAST:event_beginAnalysis
 
+    private void showHelpDialog(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showHelpDialog
+
+    }//GEN-LAST:event_showHelpDialog
+
+    private void helpMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpMenuItemActionPerformed
+        JFrame mainFrame = BootsieApp.getApplication().getMainFrame();
+        helpDialog.setLocationRelativeTo(mainFrame);
+        BootsieApp.getApplication().show(helpDialog);
+    }//GEN-LAST:event_helpMenuItemActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel DataSetPane;
     private javax.swing.JLabel EstimationReportLabel;
@@ -379,6 +443,10 @@ public class BootsieView extends FrameView {
     private javax.swing.JMenuItem exportPaup;
     private javax.swing.JMenuItem exportPopgene;
     private javax.swing.JMenuItem exportTab;
+    private javax.swing.JDialog helpDialog;
+    private javax.swing.JMenuItem helpMenuItem;
+    private javax.swing.JScrollPane helpScrollPane;
+    private javax.swing.JTextPane helpTextPane;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JPopupMenu.Separator jSeparator1;

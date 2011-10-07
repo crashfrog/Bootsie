@@ -28,6 +28,7 @@ public class DataSetMasterPanel extends DataSetPanel {
    public DataSetMasterPanel(){
       this.DataSetName.setText("Apply to all:");
       this.setBackground(Color.GRAY);
+      PlotCVSVG.setEnabled(BootsieApp.getApplication().svgWorks);
    }
 
    public void addNumBootstrapsListener(ActionListener l){

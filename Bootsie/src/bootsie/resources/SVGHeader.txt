@@ -72,6 +72,3 @@
          x="-897.43799"
          y="23.433067">% Coefficient of Variation</tspan></text>
          
-         
-  </g>
-</svg>

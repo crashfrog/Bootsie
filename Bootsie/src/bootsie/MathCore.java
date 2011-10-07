@@ -5,7 +5,6 @@
 package bootsie;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 /**
  *
@@ -13,46 +12,44 @@ import java.util.Iterator;
  */
 public abstract class MathCore {
     //catch-all class of static methods for these statistical tests.
-    //re-write this in most pseudo-code-like syntax - try to avoid "Java-ese."
+    //TODO: re-write this in most pseudo-code-like syntax - try to avoid "Java-ese."
     
     public static double locusCoV(ArrayList <Byte>loci){
         double cov = 0;
         double stdDev = 0;
-        //iterate over loci and produce the std dev and coefficent of variance
         double mean = MathCore.locusMean(loci);
-        Iterator<Byte> i = loci.iterator();
-        while (i.hasNext()){
-            double v = i.next();
-            stdDev = Math.pow((mean - v), 2);
+        for (Byte locus: loci){ //for each locus in loci
+            double v = locus;
+            stdDev = Math.pow((v - mean), 2);
         }
         stdDev = Math.sqrt(stdDev / (loci.size() - 1));
         
-        cov = stdDev / Math.abs(mean);
+        if (mean != 0) {
+            cov = stdDev / Math.abs(mean);
+        }
         return cov;
         
     }
     
     public static double locusMean(ArrayList <Byte>loci){
         double mean = 0;
-        //iterate over loci and produce the mean
-        Iterator<Byte> i = loci.iterator();
-        while (i.hasNext()){
-            mean += i.next();
+        for (Byte locus: loci){ //for each locus in loci
+            mean += locus;
         }
         mean /= loci.size();
         return mean;
     }
     
     public static ArrayList<Byte> getBootstrap(PopulationMatrixModel data, int bootstrapVal){
-        ArrayList<Byte> bootstrapLoci = new ArrayList<Byte>();
-        ArrayList<Integer> picks = new ArrayList<Integer>();
+        //a method to produce a random-with-replacement sample of N loci from the population
+        ArrayList<Byte> bootstrapLoci = new ArrayList<>();
+        ArrayList<Integer> picks = new ArrayList<>();
         int lociSize = data.getLength();
         for (int i = 0; i < bootstrapVal; i++){
             picks.add(new Integer((int) (Math.random() * lociSize)));
         }
-        Iterator<Integer> it = picks.iterator();
-        while (it.hasNext()){
-            bootstrapLoci.addAll(data.getAllNthLoci(it.next()));
+        for (Integer randomNumber: picks){
+            bootstrapLoci.addAll(data.getAllNthLoci(randomNumber));
         }
         
         return bootstrapLoci;
@@ -60,13 +57,19 @@ public abstract class MathCore {
     
     public static void bootstrapCoefficientOfVariance(PopulationMatrixModel data, BootstrapMonitor monitor){
         monitor.startingOp();
-        ArrayList<Double> covArray = new ArrayList<Double>();
+        ArrayList<Double> covArray = new ArrayList<>();
         int lociSize = data.getLength();
         for (int i = 1; i <= lociSize; i++){
             double covLocus = 0;
             int n;
             for (n = 1; n <= data.numBootstraps; n++){
-                covLocus += MathCore.locusCoV(MathCore.getBootstrap(data, i));
+                double cov = MathCore.locusCoV(MathCore.getBootstrap(data, i));
+                if (cov != 0){
+                    covLocus += cov;
+                } else {
+                    //if cov was zero, don't count this bootstrap
+                    n--;
+                }
             }
             covLocus = covLocus / n;
             covArray.add(covLocus);
@@ -79,7 +82,7 @@ public abstract class MathCore {
     
     public static ArrayList<Double> bootstrapCovTest(PopulationMatrixModel data, int numTests){
         //estimator function. Has to return actual CoV values to evade compiler optimization.
-        ArrayList<Double> covArray = new ArrayList<Double>();
+        ArrayList<Double> covArray = new ArrayList<>();
         int lociSize = data.getLength();
         int halfSize = (lociSize + 1) / 2;
         double covLocus = 0;

@@ -42,6 +42,7 @@ public class DataSetPanel extends javax.swing.JPanel {
 
     public DataSetPanel(boolean b) {
         initComponents();
+        PlotCVSVG.setEnabled(BootsieApp.getApplication().svgWorks);
         Border lnBdr = BorderFactory.createLineBorder(Color.GRAY);
         this.setBorder(lnBdr);
         
