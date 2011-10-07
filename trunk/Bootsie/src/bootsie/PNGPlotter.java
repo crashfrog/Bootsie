@@ -35,12 +35,14 @@ public class PNGPlotter extends BufferedImage implements Plotter {
    static final int height = 450;
    static final int tickLength = 5;
    static final int numYTicks = 5;
-   int xPlotWidth;
+     int xPlotWidth;
    int x_axis_space;
    int y_axis_space;
    static int numXTicks;
    ArrayList<Integer> x_tick_labels;
    PopulationMatrixModel data;
+
+   
    
    public PNGPlotter(PopulationMatrixModel d) {
       super(width, height, BufferedImage.TYPE_BYTE_GRAY);

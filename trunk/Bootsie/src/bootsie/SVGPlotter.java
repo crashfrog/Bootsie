@@ -5,12 +5,8 @@
 
 package bootsie;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  *
@@ -26,27 +22,21 @@ public class SVGPlotter implements Plotter {
 
     SVGPlotter(PopulationMatrixModel d) {
         data = d;
+        svgOutput = new StringBuilder();
         //set up header for SVG file
-        header = new StringBuilder(1024);
-        File SVGHeader = new File("/resources/SVGHeader.txt");
-        BufferedReader reader;
+        InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("bootsie/resources/SVGHeader.txt");
+        StringBuilder hdr = new StringBuilder();
+        byte[] chars = new byte[1024];
+  	int bytesRead = 0;
         try {
-            reader = new BufferedReader(new FileReader(SVGHeader));
-
-
-            char[] chars = new char[1024];
-            int numRead = 0;
-            while ((numRead = reader.read(chars)) > -1) {
-                header.append(String.valueOf(chars));
-            }
-
-            reader.close();
-
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(SVGPlotter.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (java.io.IOException ex) {
-            Logger.getLogger(SVGPlotter.class.getName()).log(Level.SEVERE, null, ex);
+            while( (bytesRead = inputStream.read(chars)) > -1){
+                    hdr.append(new String(chars, 0, bytesRead));
+          }
+        inputStream.close();    
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
+  	header = hdr;
         //tick marks
         
         //labels
