@@ -5,6 +5,7 @@
 package bootsie;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  *
@@ -95,6 +96,40 @@ public abstract class MathCore {
 
 
         return covArray;
+    }
+    
+    public static double geneticDistance(DataSample a, DataSample b){
+        double geneticDistance = 0.0;
+        
+        Iterator<Byte> ia = a.iterator();
+        Iterator<Byte> ib = a.iterator();
+        double match = 0.0;
+        double mismatch = 0.0;
+        while (ia.hasNext() && ib.hasNext()){
+            Byte i = ia.next();
+            Byte j = ia.next();
+            if (MathCore.isMissing(i) || MathCore.isMissing(j)){
+                //do nothing; ignore loci where data cannot be compared
+            } else {
+                if (i == j){
+                    match++;
+                } else {
+                    mismatch++;
+                }
+            }
+            
+        }
+        geneticDistance = mismatch / (mismatch + match);
+        return geneticDistance;
+    }
+    
+    
+    public static boolean isMissing(Byte b){
+        if (b != 1 && b != 0){
+            return true;
+        } else {
+            return false;
+        }
     }
     
 }

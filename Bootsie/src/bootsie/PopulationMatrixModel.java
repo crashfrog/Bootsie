@@ -10,7 +10,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
-import java.util.Iterator;
 import javax.swing.JTextField;
 import javax.swing.ListModel;
 import javax.swing.event.ListDataListener;
@@ -19,46 +18,30 @@ import javax.swing.event.ListDataListener;
  *
  * @author jpayne
  */
-class PopulationMatrixModel implements ActionListener, MouseListener, ListModel{
+class PopulationMatrixModel extends PopulationMatrix implements ActionListener, MouseListener, ListModel{
    //association to UI element
    private DataSetPanel panel;
    protected PlotterType plotter = PlotterType.NO_PLOTTER;
-   protected String popName;
    protected int numBootstraps = BootsieApp.defaultNumBootstraps;
-   int numLoci = 0;
    protected ArrayList<Double> coefficientsOfVariation;
 
    public PlotterType getPlotterType(){
       return plotter;
    }
-
-   //some kind of keyed table of vectors to store values
-   private ArrayList<DataSample> samples = new <DataSample>ArrayList();
+   
 
    public PopulationMatrixModel(String n, DataSetPanel p){
-      popName = n;
+      super(n);
       panel = p;
    }
 
-   public void addDataSample(DataSample d){
-      samples.add(d);
-   }
    
-   public String getName(){
-       return popName;
-   }
    
-    @Override
-   public String toString(){
-        StringBuilder s = new StringBuilder();
-        s.append(popName).append(" (").append(samples.size()).append(" samples, ").append(getLength()).append(" loci)");
-       return s.toString();
+   
+   
 
-   }
    
-   public Iterator iterator(){
-       return samples.iterator();
-   }
+  
 
    public void actionPerformed(ActionEvent e) {
       if (e.getActionCommand().equals("setNumBootstraps")){
@@ -87,52 +70,12 @@ class PopulationMatrixModel implements ActionListener, MouseListener, ListModel{
       }
    }
    
-   public ArrayList getAllNthLoci(Integer n){
-       ArrayList loci = new <Byte>ArrayList();
-       Iterator<DataSample> it = samples.iterator();
-       while(it.hasNext()){
-           try {
-               Byte b = it.next().getLoci().get(n);
-               if (b == 1 || b == 0) {
-                   loci.add(b);
-               }
-           } catch (IndexOutOfBoundsException ex){
-               //it's Saga's responsibility to make sure all data strings are
-               //the same length, but just in case they're not, it's ok if we
-               //go for the Nth loci in a sample but there's no data there.
-           }
-       }
-       return loci;
-   }
-
-   //event logic to respond to UI
 
 
-   //event logic to update UI
 
 
-   //dispatch a boostrapping thread for the actual computation
-
-    int getLength() {
-        if (numLoci == 0){
-            //return number of loci in population, which is the most loci in any sample.
-            Iterator<DataSample> i = samples.iterator();
-            int length = 0;
-            while (i.hasNext()) {
-                DataSample d = i.next();
-                if (d.size() > length) {
-                    length = d.size();
-                }
-            }
-            return length;
-        } else {
-            return numLoci;
-        }
-    }
-    
-    public int getSize(){
-        return samples.size();
-    }
+  
+ 
 
     public void mouseClicked(MouseEvent e) {
         if (e.getClickCount() == 2){
