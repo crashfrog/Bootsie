@@ -15,7 +15,7 @@ import java.util.Iterator;
 public class DataSample{
 
    String sampleName;
-   ArrayList<Byte> loci = new ArrayList<Byte>();
+   ArrayList<Byte> loci = new ArrayList<>();
 
    public DataSample(String n){
       sampleName = n;
@@ -27,6 +27,10 @@ public class DataSample{
 
    public ArrayList<Byte> getLoci(){
       return loci;
+   }
+   
+   public Iterator<Byte> iterator(){
+       return loci.iterator();
    }
    
    public int size(){
