@@ -232,6 +232,11 @@ public class BootsieView extends FrameView {
         exportPaup.setText(resourceMap.getString("exportPaup.text")); // NOI18N
         exportPaup.setActionCommand(resourceMap.getString("exportPaup.actionCommand")); // NOI18N
         exportPaup.setName("exportPaup"); // NOI18N
+        exportPaup.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exportPaupActionPerformed(evt);
+            }
+        });
         ExportMenu.add(exportPaup);
 
         exportTab.setText(resourceMap.getString("exportTab.text")); // NOI18N
@@ -294,7 +299,6 @@ public class BootsieView extends FrameView {
         GoButton.setAction(actionMap.get("beginAnalysis")); // NOI18N
         GoButton.setText(resourceMap.getString("GoButton.text")); // NOI18N
         GoButton.setActionCommand(resourceMap.getString("GoButton.actionCommand")); // NOI18N
-        GoButton.setEnabled(false);
         GoButton.setFocusPainted(false);
         GoButton.setFocusable(false);
         GoButton.setName("GoButton"); // NOI18N
@@ -432,6 +436,11 @@ public class BootsieView extends FrameView {
         helpDialog.setLocationRelativeTo(mainFrame);
         BootsieApp.getApplication().show(helpDialog);
     }//GEN-LAST:event_helpMenuItemActionPerformed
+
+    private void exportPaupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportPaupActionPerformed
+        ExportDialog exportDialog = new ExportDialog(this.getFrame(), true, new PaupDataExporter());
+       exportDialog.setVisible(true);
+    }//GEN-LAST:event_exportPaupActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel DataSetPane;

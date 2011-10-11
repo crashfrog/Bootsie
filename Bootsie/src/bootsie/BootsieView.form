@@ -92,6 +92,9 @@
                 <Property name="actionCommand" type="java.lang.String" resourceKey="exportPaup.actionCommand"/>
                 <Property name="name" type="java.lang.String" value="exportPaup" noResource="true"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="exportPaupActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="exportTab">
               <Properties>
@@ -253,7 +256,6 @@
             </Property>
             <Property name="text" type="java.lang.String" resourceKey="GoButton.text"/>
             <Property name="actionCommand" type="java.lang.String" resourceKey="GoButton.actionCommand"/>
-            <Property name="enabled" type="boolean" value="false"/>
             <Property name="focusPainted" type="boolean" value="false"/>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="name" type="java.lang.String" value="GoButton" noResource="true"/>
