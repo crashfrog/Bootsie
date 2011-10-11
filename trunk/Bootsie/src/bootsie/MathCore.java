@@ -18,9 +18,9 @@ public abstract class MathCore {
         double stdDev = 0.0;
         double mean = MathCore.doubleMean(numbers);
         for (Double value: numbers){ //for each locus in loci
-            stdDev = Math.pow((value - mean), 2); //(value - mean) squared
+            stdDev += Math.pow((value - mean), 2); //(value - mean) squared
         }
-        stdDev = Math.sqrt(stdDev / (numbers.size() - 1));
+        stdDev = Math.sqrt(stdDev / (double) numbers.size());
         
         if (mean == 0.0) {
             cov = Double.NaN; //return a non-number (NotANumber)
@@ -38,7 +38,7 @@ public abstract class MathCore {
         for (Double value: numbers){ //for each value in numbers
             mean += value;
         }
-        mean /= numbers.size();
+        mean = mean / (double) numbers.size();
         return mean;
     }
     

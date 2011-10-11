@@ -4,7 +4,6 @@
 
 package bootsie;
 
-import java.awt.Image;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -16,7 +15,6 @@ import java.nio.charset.Charset;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.logging.Level;
