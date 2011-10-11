@@ -142,7 +142,7 @@ public class BootsieApp extends SingleFrameApplication {
                   c = matrixLineRaw.charAt(i);
                   if (c == 45 || c == 57 || c== 46) { //-, ., and 9 are 'no data' characters
                      c = '?';
-                     dataSample.getLoci().add(new Byte((byte) '?'));
+                     dataSample.getLoci().add(new Byte((byte) -1));
                      //System.out.print('?');
                   }
                   if (c != '\t') {
@@ -253,7 +253,6 @@ public class BootsieApp extends SingleFrameApplication {
     private void exportToReportDirectory(String export, String dirName, String filename) {
         File exportFile = new File(exportDirectory, dirName + "/" + filename);
         try {
-            System.out.println("Writing " + exportFile.toString());
             new File(exportDirectory + "/" + dirName).mkdir();
             exportFile.createNewFile();
             BufferedWriter writer = new BufferedWriter(new FileWriter(exportFile));
@@ -269,7 +268,6 @@ public class BootsieApp extends SingleFrameApplication {
     
     void exportToReportDirectory(java.awt.image.RenderedImage image, String dirName, String filename){
         File exportFile = new File(exportDirectory, dirName + "/" + filename);
-        System.out.println("Writing " + exportFile.toString());
         new File(exportDirectory + "/" + dirName).mkdir();
         try {
             javax.imageio.ImageIO.write(image, "png", exportFile);

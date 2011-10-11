@@ -26,20 +26,21 @@ public class TabDelimitDataExporter extends DataExporter {
       //build export string via stringbuilder
       if (combine) {
          StringBuilder export = new StringBuilder(header);
+         
          Iterator<PopulationMatrixModel> it = data.iterator();
          while (it.hasNext()){
             export.append(generateString(it.next()));
          }
          BootsieApp.getApplication().exportFile(file, export);
       } else {
-         ArrayList<StringBuilder> exports = new ArrayList<StringBuilder>();
+         ArrayList<StringBuilder> exports = new ArrayList<>();
          Iterator<PopulationMatrixModel> it = data.iterator();
          while(it.hasNext()){
             StringBuilder export = new StringBuilder(header);
             export.append(generateString(it.next()));
             exports.add(export);
          }
-         ArrayList<File> files = new ArrayList<File>();
+         ArrayList<File> files = new ArrayList<>();
          BootsieApp.getApplication().exportFiles(files, exports);
       }
    }
@@ -47,11 +48,12 @@ public class TabDelimitDataExporter extends DataExporter {
    @Override
    public StringBuilder generateString(PopulationMatrixModel data) {
       StringBuilder export = new StringBuilder();
+      export.append(data.getSize()).append("\t").append(data.getLength()).append("\r\n");
       Iterator<DataSample> it = data.iterator();
       while(it.hasNext()){
          DataSample s = it.next();
          ArrayList<Byte> loci = s.getLoci();
-         export.append(s.getName() + "\t");
+            export.append(s.getName()).append("\t");
          Iterator<Byte> i = loci.iterator();
          while(i.hasNext()){
             Byte b = i.next();
@@ -62,7 +64,7 @@ public class TabDelimitDataExporter extends DataExporter {
             }
             export.append(delimitChar);
          }
-         export.append("\n");
+         export.append("\r\n");
       }
       return export;
    }

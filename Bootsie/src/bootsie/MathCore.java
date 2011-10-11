@@ -1,7 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package bootsie;
 
 import java.util.ArrayList;
@@ -13,105 +10,103 @@ import java.util.Iterator;
  */
 public abstract class MathCore {
     //catch-all class of static methods for these statistical tests.
-    //TODO: re-write this in most pseudo-code-like syntax - try to avoid "Java-ese."
     
-    public static double locusCoV(ArrayList <Byte>loci){
-        double cov = 0;
-        double stdDev = 0;
-        double mean = MathCore.locusMean(loci);
-        for (Byte locus: loci){ //for each locus in loci
-            double v = locus;
-            stdDev = Math.pow((v - mean), 2);
+    public static double doubleCoV(ArrayList<Double> numbers){
+        //determine coefficient of variation for an array of double-precision
+        //floating-point values.
+        double cov = 0.0;
+        double stdDev = 0.0;
+        double mean = MathCore.doubleMean(numbers);
+        for (Double value: numbers){ //for each locus in loci
+            stdDev = Math.pow((value - mean), 2); //(value - mean) squared
         }
-        stdDev = Math.sqrt(stdDev / (loci.size() - 1));
+        stdDev = Math.sqrt(stdDev / (numbers.size() - 1));
         
-        if (mean != 0) {
-            cov = stdDev / Math.abs(mean);
+        if (mean == 0.0) {
+            cov = Double.NaN; //return a non-number (NotANumber)
+        } else {
+            cov = stdDev / mean;
         }
         return cov;
         
     }
     
-    public static double locusMean(ArrayList <Byte>loci){
-        double mean = 0;
-        for (Byte locus: loci){ //for each locus in loci
-            mean += locus;
+    public static double doubleMean(ArrayList<Double> numbers){
+        //determine arithmetic mean for an array of double-precision floating-
+        //point values.
+        double mean = 0.0;
+        for (Double value: numbers){ //for each value in numbers
+            mean += value;
         }
-        mean /= loci.size();
+        mean /= numbers.size();
         return mean;
     }
     
-    public static ArrayList<Byte> getBootstrap(PopulationMatrixModel data, int bootstrapVal){
+    public static Double getCoVOfOneBootstrap(PopulationMatrixModel data, int bootstrapVal){
         //a method to produce a random-with-replacement sample of N loci from the population
-        ArrayList<Byte> bootstrapLoci = new ArrayList<>();
         ArrayList<Integer> picks = new ArrayList<>();
         int lociSize = data.getLength();
         for (int i = 0; i < bootstrapVal; i++){
             picks.add(new Integer((int) (Math.random() * lociSize)));
         }
-        for (Integer randomNumber: picks){
-            bootstrapLoci.addAll(data.getAllNthLoci(randomNumber));
-        }
+        PopulationMatrix bootstrap = data.getBootstrap(picks);
+        bootstrap.populateGeneticDistanceMatrix();
+        return MathCore.doubleCoV(bootstrap.getGeneticDistances());
         
-        return bootstrapLoci;
     }
     
     public static void bootstrapCoefficientOfVariance(PopulationMatrixModel data, BootstrapMonitor monitor){
         monitor.startingOp();
-        ArrayList<Double> covArray = new ArrayList<>();
+        ArrayList<Double> covResultsArray = new ArrayList<>();
         int lociSize = data.getLength();
         for (int i = 1; i <= lociSize; i++){
-            double covLocus = 0;
+            ArrayList<Double> coefficients = new ArrayList<>();
             int n;
             for (n = 1; n <= data.numBootstraps; n++){
-                double cov = MathCore.locusCoV(MathCore.getBootstrap(data, i));
-                if (cov != 0){
-                    covLocus += cov;
+                Double cov = MathCore.getCoVOfOneBootstrap(data, i);
+                if ((cov.equals(Double.NaN)) == false){ //div by zero or something
+                    coefficients.add(cov);
+                    monitor.completeOneOp();
                 } else {
-                    //if cov was zero, don't count this bootstrap
+                    //if cov was not a number, don't count this bootstrap
                     n--;
                 }
             }
-            covLocus = covLocus / n;
-            covArray.add(covLocus);
-            monitor.completeOneOp();
+            double meanCoV = MathCore.doubleMean(coefficients);
+            covResultsArray.add(meanCoV);
+            
         }
         
-        data.coefficientsOfVariation = covArray;
+        data.coefficientsOfVariation = covResultsArray;
         monitor.completeAllOps();
     }
     
-    public static ArrayList<Double> bootstrapCovTest(PopulationMatrixModel data, int numTests){
-        //estimator function. Has to return actual CoV values to evade compiler optimization.
+    public static ArrayList<Double> bootstrapCovTest(PopulationMatrixModel data, int numTests) {
+        //estimator function. Returns actual CoV values to evade compiler optimization.
         ArrayList<Double> covArray = new ArrayList<>();
-        int lociSize = data.getLength();
-        int halfSize = (lociSize + 1) / 2;
         double covLocus = 0;
         int n;
-        for (n = 0; n < numTests; n++) {
-            covLocus += MathCore.locusCoV(MathCore.getBootstrap(data, halfSize));
+        for (n = 0; n <= numTests; n++) {
+            double cov = MathCore.getCoVOfOneBootstrap(data, data.getLength() / 2);
+            covArray.add(cov);
         }
-        covLocus = covLocus / n;
-        covArray.add(covLocus);
-
-
         return covArray;
     }
     
     public static double geneticDistance(DataSample a, DataSample b){
         double geneticDistance = 0.0;
-        
         Iterator<Byte> ia = a.iterator();
-        Iterator<Byte> ib = a.iterator();
+        Iterator<Byte> ib = b.iterator();
         double match = 0.0;
         double mismatch = 0.0;
         while (ia.hasNext() && ib.hasNext()){
             Byte i = ia.next();
-            Byte j = ia.next();
-            if (MathCore.isMissing(i) || MathCore.isMissing(j)){
+            Byte j = ib.next();
+            //System.out.println(i + " and " + j);
+            if (i == -1 || j == -1){
                 //do nothing; ignore loci where data cannot be compared
             } else {
-                if (i == j){
+                if (i.equals(j)){
                     match++;
                 } else {
                     mismatch++;
@@ -122,14 +117,4 @@ public abstract class MathCore {
         geneticDistance = mismatch / (mismatch + match);
         return geneticDistance;
     }
-    
-    
-    public static boolean isMissing(Byte b){
-        if (b != 1 && b != 0){
-            return true;
-        } else {
-            return false;
-        }
-    }
-    
 }

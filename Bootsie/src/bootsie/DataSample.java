@@ -20,9 +20,18 @@ public class DataSample{
    public DataSample(String n){
       sampleName = n;
    }
+   
+   public DataSample(String n, ArrayList<Byte> l){
+       sampleName = n;
+       loci = l;
+   }
 
    public String getName(){
       return sampleName;
+   }
+   
+   public void add(Byte b){
+       loci.add(b);
    }
 
    public ArrayList<Byte> getLoci(){
@@ -43,7 +52,7 @@ public class DataSample{
        Iterator<Byte> it = loci.iterator();
        while (it.hasNext()){
            byte b = it.next();
-           if (b == 63){
+           if (b == -1){
             s.append('.');
            } else {
                s.append(b);
