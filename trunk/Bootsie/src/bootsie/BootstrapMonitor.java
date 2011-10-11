@@ -34,7 +34,7 @@ public class BootstrapMonitor {
     
     public void completeOneOp(){
         
-        absoluteProgress += data.numBootstraps;
+        absoluteProgress++;
         double relativeProgressFrac = absoluteProgress / totalBootstrapOps;
         //reportProgress = relativeProgressFrac;
         reportProgress = Double.valueOf(new DecimalFormat("#0.000").format(relativeProgressFrac));

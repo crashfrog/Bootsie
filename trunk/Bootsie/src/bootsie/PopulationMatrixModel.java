@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.Iterator;
 import javax.swing.JTextField;
 import javax.swing.ListModel;
 import javax.swing.event.ListDataListener;
@@ -18,12 +19,13 @@ import javax.swing.event.ListDataListener;
  *
  * @author jpayne
  */
-class PopulationMatrixModel extends PopulationMatrix implements ActionListener, MouseListener, ListModel{
+public class PopulationMatrixModel extends PopulationMatrix implements ActionListener, MouseListener, ListModel{
    //association to UI element
    private DataSetPanel panel;
    protected PlotterType plotter = PlotterType.NO_PLOTTER;
    protected int numBootstraps = BootsieApp.defaultNumBootstraps;
    protected ArrayList<Double> coefficientsOfVariation;
+   protected ArrayList<ArrayList<Byte>> bootstrapCache = null;
 
    public PlotterType getPlotterType(){
       return plotter;
@@ -35,9 +37,54 @@ class PopulationMatrixModel extends PopulationMatrix implements ActionListener, 
       panel = p;
    }
 
+   @Override
+   public ArrayList<Byte> getAllNthLoci(Integer n){
+       //performance-enhancing cache for bootstrap grabs
+       ArrayList<Byte> bootstrapGrabs;
+       
+       try {
+         
+       } catch (Exception e) {
+           bootstrapCache = new ArrayList<>(this.getLength());
+       }
+       
+       try {
+           bootstrapGrabs = bootstrapCache.get(n);
+       } catch (Exception ex){
+           bootstrapGrabs = super.getAllNthLoci(n);
+           
+           try {
+               bootstrapCache.add(n, bootstrapGrabs);
+           } catch (Exception e) {
+               bootstrapCache = new ArrayList<>(this.getLength());
+           }
+           
+       }
+       return bootstrapGrabs;
+   }
    
+   public String distanceMatrixToString(){
+       return geneticDistanceMatrix.toString();
+   }
    
-   
+   public PopulationMatrix getBootstrap(ArrayList<Integer> picks){
+       //produce a bootstrap subsample population from a list of
+       //integer "picks"
+       ArrayList<DataSample> bootSamples = new ArrayList<>(samples.size());
+       for (DataSample sample: samples){
+           bootSamples.add(new DataSample(sample.getName()));
+       }
+
+       for (Integer pick : picks){
+           Iterator<DataSample> ibs = bootSamples.iterator();
+           ArrayList<Byte> nthLoci = getAllNthLoci(pick);
+           for (Byte locus : nthLoci){
+               ibs.next().add(locus);
+           }
+       }
+       return new PopulationMatrix(bootSamples);
+       
+   }
    
 
    

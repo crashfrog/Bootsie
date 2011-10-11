@@ -5,7 +5,6 @@
 package bootsie;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 
 /**
@@ -15,7 +14,7 @@ import java.util.Iterator;
 public class PopulationMatrix {
     
     protected String popName;
-    protected HashMap<DataSample, HashMap<DataSample, Double>> geneticDistanceMatrix;
+    protected DistanceMatrix geneticDistanceMatrix;
     protected ArrayList<DataSample> samples;
     protected int numLoci = 0;
     
@@ -39,31 +38,16 @@ public class PopulationMatrix {
        return s.toString();
 
    }
+        
+        public ArrayList<Double> getGeneticDistances(){
+            return geneticDistanceMatrix.distances();
+        }
     
-    
-    synchronized void populateGeneticDistanceMatrix(){
-       //calculate pairwise genetic distance using MathCore method
-       geneticDistanceMatrix = new HashMap<>(samples.size());
-       for(DataSample sample_x: samples){
-           HashMap<DataSample, Double> hash = new HashMap<>(samples.size());
-           geneticDistanceMatrix.put(sample_x, hash);
-       }
-       //distances are pairwise so we can just copy the reciprocal distance
-       for (DataSample sample_x: samples){
-           for (DataSample sample_y: samples){
-               if (sample_x == sample_y){
-                   geneticDistanceMatrix.get(sample_x).put(sample_x, new Double(0.0));
-               } else {
-                   //check to see if reciprocal value has been calculated
-                   if (geneticDistanceMatrix.get(sample_y).get(sample_x) != null){
-                       geneticDistanceMatrix.get(sample_x).put(sample_y, geneticDistanceMatrix.get(sample_y).get(sample_x));
-                   } else {
-                       geneticDistanceMatrix.get(sample_x).put(sample_y, MathCore.geneticDistance(sample_x, sample_y));
-                   }
-               }
-           }
-       }
-   }
+    public void populateGeneticDistanceMatrix(){
+        geneticDistanceMatrix = new DistanceMatrix(samples);
+        geneticDistanceMatrix.populateGeneticDistanceMatrix();
+    }
+  
     
     public ArrayList<Byte> getAllNthLoci(Integer n){
        ArrayList<Byte> loci = new ArrayList<>();
@@ -71,9 +55,9 @@ public class PopulationMatrix {
        while(it.hasNext()){
            try {
                Byte b = it.next().getLoci().get(n);
-               if (b == 1 || b == 0) {
+
                    loci.add(b);
-               }
+               
            } catch (IndexOutOfBoundsException ex){
                //it's Saga's responsibility to make sure all data strings are
                //the same length, but just in case they're not, it's ok if we
@@ -83,7 +67,7 @@ public class PopulationMatrix {
        return loci;
    }
     
-    int getLength() {
+    public int getLength() {
         if (numLoci == 0){
             //return number of loci in population, which is the most loci in any sample.
             Iterator<DataSample> i = samples.iterator();
