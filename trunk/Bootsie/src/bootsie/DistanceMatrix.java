@@ -53,12 +53,15 @@ public class DistanceMatrix extends HashMap<DataSample, HashMap> {
        ArrayList<DataSample> keyList = new ArrayList<>();
        keyList.addAll(this.keySet());
         for (DataSample a: this.keySet()){
-           keyList.remove(a);
+            
+           keyList.remove(a); 
            Iterator<DataSample> it = keyList.iterator();
            while (it.hasNext()){
                DataSample b = it.next();
-               this.put(a, b, MathCore.geneticDistance(a, b));
+               this.put(a, b, MathCore.simpleGeneticDistance(a, b));
+               //this.put(a, b, MathCore.jaccardGeneticDistance(a, b));
            }
+           
        }
    }
     

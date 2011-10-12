@@ -114,7 +114,7 @@ public class DataSetPanel extends javax.swing.JPanel {
     
     public void displayBeginComputation(){
         isComputing = true;
-        PlotCVGroupLabel.setText("Working.");
+        PlotCVGroupLabel.setText("Working...");
     }
 
     public void displayComputationProgress(double d){

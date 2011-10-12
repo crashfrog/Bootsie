@@ -47,7 +47,7 @@ public abstract class MathCore {
         ArrayList<Integer> picks = new ArrayList<>();
         int lociSize = data.getLength();
         for (int i = 0; i < bootstrapVal; i++){
-            picks.add(new Integer((int) (Math.random() * lociSize)));
+            picks.add(new Integer((int) (Math.random() * lociSize - 1) + 1));
         }
         PopulationMatrix bootstrap = data.getBootstrap(picks);
         bootstrap.populateGeneticDistanceMatrix();
@@ -84,7 +84,6 @@ public abstract class MathCore {
     public static ArrayList<Double> bootstrapCovTest(PopulationMatrixModel data, int numTests) {
         //estimator function. Returns actual CoV values to evade compiler optimization.
         ArrayList<Double> covArray = new ArrayList<>();
-        double covLocus = 0;
         int n;
         for (n = 0; n <= numTests; n++) {
             double cov = MathCore.getCoVOfOneBootstrap(data, data.getLength() / 2);
@@ -93,7 +92,8 @@ public abstract class MathCore {
         return covArray;
     }
     
-    public static double geneticDistance(DataSample a, DataSample b){
+    public static double simpleGeneticDistance(DataSample a, DataSample b){
+        //simple coincidence genetic distance; GD_ij = sum(i = j) / sum(i = j) + sum (i != j)
         double geneticDistance = 0.0;
         Iterator<Byte> ia = a.iterator();
         Iterator<Byte> ib = b.iterator();
@@ -107,6 +107,32 @@ public abstract class MathCore {
                 //do nothing; ignore loci where data cannot be compared
             } else {
                 if (i.equals(j)){
+                    match++;
+                } else {
+                    mismatch++;
+                }
+            }
+            
+        }
+        geneticDistance = mismatch / (mismatch + match);
+        return geneticDistance;
+    }
+    
+    public static double jaccardGeneticDistance(DataSample a, DataSample b){
+        //compliment of jaccard's similarity
+        double geneticDistance = 0.0;
+        Iterator<Byte> ia = a.iterator();
+        Iterator<Byte> ib = b.iterator();
+        double match = 0.0;
+        double mismatch = 0.0;
+        while (ia.hasNext() && ib.hasNext()){
+            Byte i = ia.next();
+            Byte j = ib.next();
+            //System.out.println(i + " and " + j);
+            if (i == -1 || j == -1){
+                //do nothing; ignore loci where data cannot be compared
+            } else {
+                if (i == 1 && j == 1){
                     match++;
                 } else {
                     mismatch++;

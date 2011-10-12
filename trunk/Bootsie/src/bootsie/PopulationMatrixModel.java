@@ -43,18 +43,13 @@ public class PopulationMatrixModel extends PopulationMatrix implements ActionLis
        ArrayList<Byte> bootstrapGrabs;
        
        try {
-         
-       } catch (Exception e) {
-           bootstrapCache = new ArrayList<>(this.getLength());
-       }
-       
-       try {
            bootstrapGrabs = bootstrapCache.get(n);
        } catch (Exception ex){
            bootstrapGrabs = super.getAllNthLoci(n);
            
            try {
                bootstrapCache.add(n, bootstrapGrabs);
+               //System.out.println(n);
            } catch (Exception e) {
                bootstrapCache = new ArrayList<>(this.getLength());
            }
@@ -70,6 +65,7 @@ public class PopulationMatrixModel extends PopulationMatrix implements ActionLis
    public PopulationMatrix getBootstrap(ArrayList<Integer> picks){
        //produce a bootstrap subsample population from a list of
        //integer "picks"
+       //System.out.println("Building bootstrap from" + picks);
        ArrayList<DataSample> bootSamples = new ArrayList<>(samples.size());
        for (DataSample sample: samples){
            bootSamples.add(new DataSample(sample.getName()));
@@ -78,6 +74,7 @@ public class PopulationMatrixModel extends PopulationMatrix implements ActionLis
        for (Integer pick : picks){
            Iterator<DataSample> ibs = bootSamples.iterator();
            ArrayList<Byte> nthLoci = getAllNthLoci(pick);
+           //System.out.print("Getting " + pick + " ");
            for (Byte locus : nthLoci){
                ibs.next().add(locus);
            }

@@ -10,7 +10,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
@@ -29,13 +28,13 @@ public class PNGPlotter extends BufferedImage implements Plotter {
 
    public final PlotterType plotterType = PlotterType.PNG_PLOTTER;
    Graphics2D context;
-   Point lastPoint;
+   Point.Double lastPoint;
    int offset = 30; //pixel distance from edge of image to edge of graph axes
    static final int width = 750;
    static final int height = 450;
    static final int tickLength = 5;
    static final int numYTicks = 5;
-     int xPlotWidth;
+   int xPlotWidth;
    int x_axis_space;
    int y_axis_space;
    static int numXTicks;
@@ -92,7 +91,7 @@ public class PNGPlotter extends BufferedImage implements Plotter {
        context.setStroke(new BasicStroke(2.0f));
    }
    
-   private void extendPath(Point newPoint){
+   private void extendPath(Point.Double newPoint){
       context.draw(new Line2D.Float(lastPoint, newPoint));
       lastPoint = newPoint;
    }
@@ -102,16 +101,16 @@ public class PNGPlotter extends BufferedImage implements Plotter {
    @Override
    public void plotVariance() {
       
-      float offsetX = x_axis_space / xPlotWidth;
+      float offsetX = (float) x_axis_space / (float) xPlotWidth;
       
       Iterator<Double> it = data.coefficientsOfVariation.iterator();
       while (it.hasNext()){
          Double cov = it.next();
          if (lastPoint == null){
              //lastPoint = new Point(offset + 1, (int) (offset + y_axis_space - (y_axis_space * cov)));
-             lastPoint = new Point(offset + tickLength + 3, (int) (offset));
+             lastPoint = new Point.Double(offset + tickLength + 3, (offset));
          } else {
-             extendPath(new Point((int) (lastPoint.x + offsetX), (int) (offset + y_axis_space - (y_axis_space * cov))));
+             extendPath(new Point.Double((double) (lastPoint.x + offsetX), (offset + y_axis_space - (y_axis_space * cov))));
          }
       }
    }
@@ -122,14 +121,14 @@ public class PNGPlotter extends BufferedImage implements Plotter {
    }
 
     private int determineXTicks() {
-        x_tick_labels = new ArrayList<Integer>();
+        x_tick_labels = new ArrayList<>();
         Integer y = 40;
         int i;
         for (i = 0; i < 5; i++){
             x_tick_labels.add(y);
-            xPlotWidth = y;
             y = y + 40;
         }
+        xPlotWidth = 200;
         
         return i;
     }
