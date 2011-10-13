@@ -94,6 +94,7 @@ public abstract class MathCore {
     
     public static double simpleGeneticDistance(DataSample a, DataSample b){
         //simple coincidence genetic distance; GD_ij = sum(i = j) / sum(i = j) + sum (i != j)
+       //Sokal and Michener 1958
         double geneticDistance = 0.0;
         Iterator<Byte> ia = a.iterator();
         Iterator<Byte> ib = b.iterator();
@@ -120,6 +121,7 @@ public abstract class MathCore {
     
     public static double jaccardGeneticDistance(DataSample a, DataSample b){
         //compliment of jaccard's similarity
+       //Jaccard 1908
         double geneticDistance = 0.0;
         Iterator<Byte> ia = a.iterator();
         Iterator<Byte> ib = b.iterator();
@@ -134,13 +136,43 @@ public abstract class MathCore {
             } else {
                 if (i == 1 && j == 1){
                     match++;
-                } else {
+                } else if (i == 0 && j == 0) {
+                   //discard 00
+                } else{
                     mismatch++;
                 }
             }
             
         }
         geneticDistance = mismatch / (mismatch + match);
+        return geneticDistance;
+    }
+    
+    public static double diceNeiGeneticDistance(DataSample a, DataSample b){
+       //Dice 1945, Nei and Li 1979
+       double geneticDistance = 0.0;
+        Iterator<Byte> ia = a.iterator();
+        Iterator<Byte> ib = b.iterator();
+        double match = 0.0;
+        double mismatch = 0.0;
+        while (ia.hasNext() && ib.hasNext()){
+            Byte i = ia.next();
+            Byte j = ib.next();
+            //System.out.println(i + " and " + j);
+            if (i == -1 || j == -1){
+                //do nothing; ignore loci where data cannot be compared
+            } else {
+                if (i == 1 && j == 1){
+                    match++;
+                } else if (i == 0 && j == 0) {
+                   //discard 00
+                } else {
+                    mismatch++;
+                }
+            }
+            
+        }
+        geneticDistance = 1 - ((match * 2) / ((match * 2) + mismatch));
         return geneticDistance;
     }
 }
