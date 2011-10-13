@@ -47,6 +47,25 @@ public class DistanceMatrix extends HashMap<DataSample, HashMap> {
         return list;
     }
     
+    public ArrayList<Double> getDistances(){
+        ArrayList<Double> list = new ArrayList<>();
+        
+        ArrayList<DataSample> keyList = new ArrayList<>();
+       keyList.addAll(this.keySet());
+        for (DataSample a: this.keySet()){
+            
+           keyList.remove(a); 
+           Iterator<DataSample> it = keyList.iterator();
+           while (it.hasNext()){
+               DataSample b = it.next();
+               list.add(this.get(a, b));
+           }
+           
+       }
+        
+        return list;
+    }
+    
     synchronized void populateGeneticDistanceMatrix(){
        //calculate pairwise genetic distance using MathCore method
        //only fill half the table
@@ -58,39 +77,43 @@ public class DistanceMatrix extends HashMap<DataSample, HashMap> {
            Iterator<DataSample> it = keyList.iterator();
            while (it.hasNext()){
                DataSample b = it.next();
-               this.put(a, b, MathCore.simpleGeneticDistance(a, b));
+               this.put(a, b, MathCore.simpleGeneticSimilarity(a, b));
                //this.put(a, b, MathCore.jaccardGeneticDistance(a, b));
            }
+           
            
        }
    }
     
-    public String toString(){
-        StringBuilder output = new StringBuilder();
-        ArrayList<DataSample> keyList = new ArrayList<>();
-        keyList.addAll(this.keySet());
-        for (DataSample a: keyList){
-            output.append(a.getName()).append("\t");
-        }
-        output.append("\n");
-
-        for (DataSample a: this.keySet()){
-           output.append(a.getName()).append("\t");
-           Iterator<DataSample> it = keyList.iterator();
-           while (it.hasNext()){
-               DataSample b = it.next();
-               Double val = this.get(a, b);
-               if (val != null){
-                   output.append(val.toString());
-               }
-               output.append("\t");
-           }
-           keyList.remove(a);
-           output.append("\n");
-       }
-        
-        return output.toString();
-    }
+//    public String toString(){
+//        StringBuilder output = new StringBuilder();
+//        ArrayList<DataSample> keyList = new ArrayList<>();
+//        keyList.addAll(this.keySet());
+//        for (DataSample a: keyList){
+//            output.append("\t").append(a.getName());
+//        }
+//        output.append("\n");
+//
+//        for (DataSample a: this.keySet()){
+//            
+//           output.append(a.getName()).append("\t");
+//           keyList.remove(a);
+//           Iterator<DataSample> it = keyList.iterator();
+//
+//           while (it.hasNext()){
+//               DataSample b = it.next();
+//               Double val = this.get(a, b);
+//               if (val != null){
+//                   output.append(val.toString());
+//               }
+//               output.append("\t");
+//           }
+//           
+//           output.append("\n");
+//       }
+//        
+//        return output.toString();
+//    }
 
     
 }
