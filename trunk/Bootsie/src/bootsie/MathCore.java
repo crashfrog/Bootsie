@@ -119,6 +119,33 @@ public abstract class MathCore {
         return geneticDistance;
     }
     
+        public static double simpleGeneticSimilarity(DataSample a, DataSample b){
+        //simple coincidence genetic distance; GD_ij = sum(i = j) / sum(i = j) + sum (i != j)
+       //Sokal and Michener 1958
+        double geneticDistance = 0.0;
+        Iterator<Byte> ia = a.iterator();
+        Iterator<Byte> ib = b.iterator();
+        double match = 0.0;
+        double mismatch = 0.0;
+        while (ia.hasNext() && ib.hasNext()){
+            Byte i = ia.next();
+            Byte j = ib.next();
+            //System.out.println(i + " and " + j);
+            if (i == -1 || j == -1){
+                //do nothing; ignore loci where data cannot be compared
+            } else {
+                if (i.equals(j)){
+                    match++;
+                } else {
+                    mismatch++;
+                }
+            }
+            
+        }
+        geneticDistance = 1 - (mismatch / (mismatch + match));
+        return geneticDistance;
+    }
+    
     public static double jaccardGeneticDistance(DataSample a, DataSample b){
         //compliment of jaccard's similarity
        //Jaccard 1908

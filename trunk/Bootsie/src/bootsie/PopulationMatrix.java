@@ -40,7 +40,7 @@ public class PopulationMatrix {
    }
         
         public ArrayList<Double> getGeneticDistances(){
-            return geneticDistanceMatrix.distances();
+            return geneticDistanceMatrix.getDistances();
         }
     
     public void populateGeneticDistanceMatrix(){
