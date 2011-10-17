@@ -1,4 +1,3 @@
-
 package bootsie;
 
 import java.util.ArrayList;
@@ -93,7 +92,7 @@ public abstract class MathCore {
     }
     
     public static double simpleGeneticDistance(DataSample a, DataSample b){
-        //simple coincidence genetic distance; GD_ij = sum(i = j) / sum(i = j) + sum (i != j)
+        //simple coincidence genetic distance; GD_ij = sum(i != j) / sum(i = j) + sum (i != j)
        //Sokal and Michener 1958
         double geneticDistance = 0.0;
         Iterator<Byte> ia = a.iterator();
@@ -142,7 +141,7 @@ public abstract class MathCore {
             }
             
         }
-        geneticDistance = 1 - (mismatch / (mismatch + match));
+        geneticDistance = match / (mismatch + match);
         return geneticDistance;
     }
     
