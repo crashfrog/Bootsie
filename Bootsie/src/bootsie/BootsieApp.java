@@ -42,6 +42,7 @@ public class BootsieApp extends SingleFrameApplication {
    public static final int defaultNumThreads = 2;
    File exportDirectory;
    public final boolean svgWorks = false;
+   public static final java.text.NumberFormat defaultFormat = new java.text.DecimalFormat("#.000000");
 
     @Override protected void startup() {
         view = new BootsieView(this);
@@ -248,7 +249,7 @@ public class BootsieApp extends SingleFrameApplication {
         exportToReportDirectory(export.toString(), dirName, fileName);
     }
 
-    private void exportToReportDirectory(String export, String dirName, String filename) {
+    void exportToReportDirectory(String export, String dirName, String filename) {
         File exportFile = new File(exportDirectory, dirName + "/" + filename);
         try {
             new File(exportDirectory + "/" + dirName).mkdir();
@@ -269,6 +270,7 @@ public class BootsieApp extends SingleFrameApplication {
         new File(exportDirectory + "/" + dirName).mkdir();
         try {
             javax.imageio.ImageIO.write(image, "png", exportFile);
+            BootsieApp.getApplication().report("Wrote " + exportFile.toString() + ".");
         } catch (IOException ex) {
             Logger.getLogger(BootsieApp.class.getName()).log(Level.SEVERE, null, ex);
         }

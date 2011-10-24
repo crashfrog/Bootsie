@@ -24,7 +24,7 @@ public class PopulationMatrixModel extends PopulationMatrix implements ActionLis
    private DataSetPanel panel;
    protected PlotterType plotter = PlotterType.NO_PLOTTER;
    protected int numBootstraps = BootsieApp.defaultNumBootstraps;
-   protected ArrayList<Double> coefficientsOfVariation;
+   protected BootsieCoVReport coefficientsOfVariation;
    protected ArrayList<ArrayList<Byte>> bootstrapCache = null;
 
    public PlotterType getPlotterType(){
@@ -51,7 +51,7 @@ public class PopulationMatrixModel extends PopulationMatrix implements ActionLis
                bootstrapCache.add(n, bootstrapGrabs);
                //System.out.println(n);
            } catch (Exception e) {
-               bootstrapCache = new ArrayList<>(this.getLength());
+               bootstrapCache = new ArrayList<ArrayList<Byte>>(this.getLength());
            }
            
        }
@@ -66,7 +66,7 @@ public class PopulationMatrixModel extends PopulationMatrix implements ActionLis
        //produce a bootstrap subsample population from a list of
        //integer "picks"
        //System.out.println("Building bootstrap from" + picks);
-       ArrayList<DataSample> bootSamples = new ArrayList<>(samples.size());
+       ArrayList<DataSample> bootSamples = new ArrayList<DataSample>(samples.size());
        for (DataSample sample: samples){
            bootSamples.add(new DataSample(sample.getName()));
        }
@@ -121,6 +121,7 @@ public class PopulationMatrixModel extends PopulationMatrix implements ActionLis
   
  
 
+    @Override
     public void mouseClicked(MouseEvent e) {
         if (e.getClickCount() == 2){
             BootsieApp.getApplication().report("Showing " + popName);
@@ -128,32 +129,39 @@ public class PopulationMatrixModel extends PopulationMatrix implements ActionLis
         }
     }
 
+    @Override
     public void mousePressed(MouseEvent e) {
 
     }
 
+    @Override
     public void mouseReleased(MouseEvent e) {
 
     }
 
+    @Override
     public void mouseEntered(MouseEvent e) {
 
     }
 
+    @Override
     public void mouseExited(MouseEvent e) {
 
     }
 
     
 
+    @Override
     public Object getElementAt(int index) {
         return samples.get(index);
     }
 
+    @Override
     public void addListDataListener(ListDataListener l) {
         //the model doesn't need to know which populations are selected
     }
 
+    @Override
     public void removeListDataListener(ListDataListener l) {
         
     }
@@ -172,13 +180,7 @@ public class PopulationMatrixModel extends PopulationMatrix implements ActionLis
     }
 
     private void saveCoV() {
-        StringBuilder export = new StringBuilder();
-        //make tab-delimited export of CoV data
-        int i = 0;
-        for (Double cov: coefficientsOfVariation){
-            export.append(++i).append("\t").append(cov).append("\n");
-        }
-        BootsieApp.getApplication().exportToReportDirectory(export, this.popName, "cov.txt");
+        BootsieApp.getApplication().exportToReportDirectory(coefficientsOfVariation.toString(), this.popName, "cov.txt");
     }
 
 }

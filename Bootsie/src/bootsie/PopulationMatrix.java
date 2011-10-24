@@ -20,7 +20,7 @@ public class PopulationMatrix {
     
     public PopulationMatrix(String n){
         popName = n;
-        samples = new ArrayList<>();
+        samples = new ArrayList<DataSample>();
     }
     
     public PopulationMatrix(ArrayList<DataSample> s){
@@ -50,18 +50,19 @@ public class PopulationMatrix {
   
     
     public ArrayList<Byte> getAllNthLoci(Integer n){
-       ArrayList<Byte> loci = new ArrayList<>();
+       ArrayList<Byte> loci = new ArrayList<Byte>();
        Iterator<DataSample> it = samples.iterator();
        while(it.hasNext()){
            try {
-               Byte b = it.next().getLoci().get(n);
-
+               Byte b = it.next().getLoci().get(n - 1);
+               //if n = 1, we want index 0, etc
                    loci.add(b);
                
            } catch (IndexOutOfBoundsException ex){
                //it's Saga's responsibility to make sure all data strings are
                //the same length, but just in case they're not, it's ok if we
                //go for the Nth loci in a sample but there's no data there.
+               System.out.println("Out of bounds - tried to get position " + n);
            }
        }
        return loci;

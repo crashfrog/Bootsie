@@ -15,7 +15,7 @@ import java.util.Iterator;
 public class DataSample{
 
    String sampleName;
-   ArrayList<Byte> loci = new ArrayList<>();
+   ArrayList<Byte> loci = new ArrayList<Byte>();
 
    public DataSample(String n){
       sampleName = n;

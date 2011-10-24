@@ -103,7 +103,7 @@ public class PNGPlotter extends BufferedImage implements Plotter {
       
       float offsetX = (float) x_axis_space / (float) xPlotWidth;
       
-      Iterator<Double> it = data.coefficientsOfVariation.iterator();
+      Iterator<Double> it = data.coefficientsOfVariation.coefficientsOfVariation.iterator();
       while (it.hasNext()){
          Double cov = it.next();
          if (lastPoint == null){
@@ -121,7 +121,7 @@ public class PNGPlotter extends BufferedImage implements Plotter {
    }
 
     private int determineXTicks() {
-        x_tick_labels = new ArrayList<>();
+        x_tick_labels = new ArrayList<Integer>();
         Integer y = 40;
         int i;
         for (i = 0; i < 5; i++){

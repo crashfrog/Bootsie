@@ -33,14 +33,14 @@ public class TabDelimitDataExporter extends DataExporter {
          }
          BootsieApp.getApplication().exportFile(file, export);
       } else {
-         ArrayList<StringBuilder> exports = new ArrayList<>();
+         ArrayList<StringBuilder> exports = new ArrayList<StringBuilder>();
          Iterator<PopulationMatrixModel> it = data.iterator();
          while(it.hasNext()){
             StringBuilder export = new StringBuilder(header);
             export.append(generateString(it.next()));
             exports.add(export);
          }
-         ArrayList<File> files = new ArrayList<>();
+         ArrayList<File> files = new ArrayList<File>();
          BootsieApp.getApplication().exportFiles(files, exports);
       }
    }
