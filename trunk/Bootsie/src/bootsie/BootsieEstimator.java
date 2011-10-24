@@ -15,7 +15,7 @@ import java.util.Iterator;
  */
 public class BootsieEstimator implements Runnable{
     
-    int numTests = 30;
+    int numTests = 10;
     
     
     public void run(){

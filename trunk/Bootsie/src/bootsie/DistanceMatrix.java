@@ -36,7 +36,7 @@ public class DistanceMatrix extends HashMap<DataSample, HashMap> {
     }
     
     public ArrayList<Double> distances(){//return distance values in no particular order
-        ArrayList<Double> list = new ArrayList<>();
+        ArrayList<Double> list = new ArrayList<Double>();
         for(HashMap<DataSample, Double> hash: this.values()){
             for(Double value: hash.values()){
                 if (value != null){
@@ -48,9 +48,9 @@ public class DistanceMatrix extends HashMap<DataSample, HashMap> {
     }
     
     public ArrayList<Double> getDistances(){
-        ArrayList<Double> list = new ArrayList<>();
+        ArrayList<Double> list = new ArrayList<Double>();
         
-        ArrayList<DataSample> keyList = new ArrayList<>();
+        ArrayList<DataSample> keyList = new ArrayList<DataSample>();
        keyList.addAll(this.keySet());
         for (DataSample a: this.keySet()){
             
@@ -69,17 +69,18 @@ public class DistanceMatrix extends HashMap<DataSample, HashMap> {
     synchronized void populateGeneticDistanceMatrix(){
        //calculate pairwise genetic distance using MathCore method
        //only fill half the table
-       ArrayList<DataSample> keyList = new ArrayList<>();
+       ArrayList<DataSample> keyList = new ArrayList<DataSample>();
        keyList.addAll(this.keySet());
         for (DataSample a: this.keySet()){
             
-           keyList.remove(a); 
+           
            Iterator<DataSample> it = keyList.iterator();
            while (it.hasNext()){
                DataSample b = it.next();
                this.put(a, b, MathCore.simpleGeneticSimilarity(a, b));
                //this.put(a, b, MathCore.jaccardGeneticDistance(a, b));
            }
+           keyList.remove(a); 
            
            
        }
