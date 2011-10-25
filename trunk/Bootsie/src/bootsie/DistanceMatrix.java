@@ -73,48 +73,42 @@ public class DistanceMatrix extends HashMap<DataSample, HashMap> {
        keyList.addAll(this.keySet());
         for (DataSample a: this.keySet()){
             
-           
-           Iterator<DataSample> it = keyList.iterator();
-           while (it.hasNext()){
-               DataSample b = it.next();
+           keyList.remove(a); 
+           for(DataSample b : keyList){
                this.put(a, b, MathCore.simpleGeneticSimilarity(a, b));
                //this.put(a, b, MathCore.jaccardGeneticDistance(a, b));
            }
-           keyList.remove(a); 
+           
            
            
        }
    }
     
-//    public String toString(){
-//        StringBuilder output = new StringBuilder();
-//        ArrayList<DataSample> keyList = new ArrayList<>();
-//        keyList.addAll(this.keySet());
-//        for (DataSample a: keyList){
-//            output.append("\t").append(a.getName());
-//        }
-//        output.append("\n");
-//
-//        for (DataSample a: this.keySet()){
-//            
-//           output.append(a.getName()).append("\t");
-//           keyList.remove(a);
-//           Iterator<DataSample> it = keyList.iterator();
-//
-//           while (it.hasNext()){
-//               DataSample b = it.next();
-//               Double val = this.get(a, b);
-//               if (val != null){
-//                   output.append(val.toString());
-//               }
-//               output.append("\t");
-//           }
-//           
-//           output.append("\n");
-//       }
-//        
-//        return output.toString();
-//    }
+    @Override
+    public String toString(){
+        this.populateGeneticDistanceMatrix();
+        StringBuilder output = new StringBuilder();
+        ArrayList<DataSample> keyList = new ArrayList<DataSample>();
+        keyList.addAll(this.keySet());
+        for (int i = 0; i < (keyList.size() - 1); i++){
+            DataSample a = keyList.get(i);
+            output.append("\t").append(a.getName());
+        }
+        output.append("\n");
+        java.text.NumberFormat f = new java.text.DecimalFormat("0.0000");
 
-    
+        ArrayList<DataSample> vertKeyList = new ArrayList<DataSample>();
+        for (int i = 1; i < keyList.size(); i++){
+            output.append(keyList.get(i).getName());
+            vertKeyList.add(keyList.get(i));
+            for (int k = 0; k < vertKeyList.size(); k++){
+                DataSample a = keyList.get(i);
+                DataSample b = keyList.get(k);
+                output.append("\t").append(f.format(this.get(a, b)));
+            }
+            output.append("\n");
+        }
+        
+        return output.toString();
+    }
 }

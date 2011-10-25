@@ -43,11 +43,11 @@ public class SVGPlotter implements Plotter {
     }
 
    public void plotVariance() {
-       offsetX = 630 / data.coefficientsOfVariation.size();
+       offsetX = 630 / data.coefficientsOfVariation.coefficientsOfVariation.size();
       //beginning of SVG path object
        path = new StringBuilder();
        path.append("<path id=\"CovPlot\" stroke=\"black\" stroke-width=\"3\" fill=\"none\" d=\"m 73,43");
-      for (Double number : data.coefficientsOfVariation){
+      for (Double number : data.coefficientsOfVariation.coefficientsOfVariation){
           extendLine(number);
       }
       //end of SVG path object

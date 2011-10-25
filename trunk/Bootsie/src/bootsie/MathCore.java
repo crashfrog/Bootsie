@@ -26,6 +26,7 @@ public abstract class MathCore {
     public static double doubleMean(ArrayList<Double> numbers){
         //determine arithmetic mean for an array of double-precision floating-
         //point values.
+        //System.out.println(numbers);
         double mean = 0.0;
         for (Double value: numbers){ //for each value in numbers
             mean += value;
@@ -96,6 +97,62 @@ public abstract class MathCore {
             stdDevResultsArray.add(stdDev);
             
         }
+        
+        data.coefficientsOfVariation = new BootsieCoVReport(covResultsArray, meanResultsArray, stdDevResultsArray, numBadStraps);
+        monitor.completeAllOps();
+    }
+    
+    public static void bootstrapPairwiseCoefficientOfVariation(PopulationMatrixModel data, BootstrapMonitor monitor){
+        monitor.startingOp();
+        ArrayList<Double> covResultsArray = new ArrayList<Double>();
+        ArrayList<Double> meanResultsArray = new ArrayList<Double>();
+        ArrayList<Double> stdDevResultsArray = new ArrayList<Double>();
+        covResultsArray.add(1.0);
+        meanResultsArray.add(1.0);
+        stdDevResultsArray.add(1.0);
+        int lociSize = data.getLength();
+        int numBadStraps = 0;
+        for (int i = 2; i <= lociSize; i++){
+            ArrayList<Double> covArray = new ArrayList<Double>();
+            ArrayList<Double> meanArray = new ArrayList<Double>();
+            ArrayList<Double> stdDevArray = new ArrayList<Double>();
+            DeepDistanceMatrix matrix = new DeepDistanceMatrix(data.samples);
+            for (int n = 0; n < data.numBootstraps; n++){
+                ArrayList<Integer> picks = new ArrayList<Integer>(i);
+                for (int p = 0; p < i; p++){
+                    //pick i random loci
+                    picks.add(new Integer((int) (Math.random() * (lociSize - 1)) + 1));
+                }
+                PopulationMatrix bootstrap = data.getBootstrap(picks);
+                bootstrap.populateGeneticDistanceMatrix();
+                matrix.addDistanceMatrix(bootstrap.geneticDistanceMatrix);
+                monitor.completeOneOp();
+            }
+            //we now have a deep distance matrix of N genetic distances from N bootstraps
+            ArrayList<ArrayList<Double>> matrixValues = matrix.getValues();
+            for (ArrayList<Double> values : matrixValues){
+                double mean = MathCore.doubleMean(values);
+                double stdDev = MathCore.doubleStdDev(values, mean);
+                double cov = Double.NaN;
+                if (mean != 0.0) {
+                    cov = stdDev / mean;
+                } else {
+                    numBadStraps++;
+                }
+                covArray.add(cov);
+                meanArray.add(mean);
+                stdDevArray.add(stdDev);
+                //monitor.completeOneOp();
+            }
+            double mean = MathCore.doubleMean(covArray);
+            double stdDev = MathCore.doubleStdDev(covArray, mean);
+            double cov = stdDev / mean;
+            covResultsArray.add(cov);
+            meanResultsArray.add(mean);
+            stdDevResultsArray.add(stdDev);
+            
+        }
+        
         
         data.coefficientsOfVariation = new BootsieCoVReport(covResultsArray, meanResultsArray, stdDevResultsArray, numBadStraps);
         monitor.completeAllOps();
@@ -225,3 +282,5 @@ public abstract class MathCore {
         return geneticDistance;
     }
 }
+//TODO: implement genetic distance/similarity measures as inner classes that implement
+//"genetic distance" interface
