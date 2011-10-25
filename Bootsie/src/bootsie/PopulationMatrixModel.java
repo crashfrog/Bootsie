@@ -68,7 +68,7 @@ public class PopulationMatrixModel extends PopulationMatrix implements ActionLis
        //System.out.println("Building bootstrap from" + picks);
        ArrayList<DataSample> bootSamples = new ArrayList<DataSample>(samples.size());
        for (DataSample sample: samples){
-           bootSamples.add(new DataSample(sample.getName()));
+           bootSamples.add(new DataSample(sample));
        }
 
        for (Integer pick : picks){

@@ -91,8 +91,16 @@ public class BootsieBootstrapper extends Thread {
        }
 
         public void run() {
-            MathCore.bootstrapCoefficientOfVariance(data, new BootstrapMonitor(data));
-        }
+           try {
+               MathCore.bootstrapPairwiseCoefficientOfVariation(data, new BootstrapMonitor(data));
+           } catch (Exception ex) {
+               //error handling
+               
+               BootsieApp.getApplication().report("Analysis terminated with error" + ex);
+               BootsieBootstrapper.getInstance().notifyFinished();
+               Logger.getLogger(BootsieBootstrapper.class.getName()).log(Level.SEVERE, null, ex);
+           }
+       }
        
    }
    

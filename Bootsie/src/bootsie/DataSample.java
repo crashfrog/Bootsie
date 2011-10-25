@@ -16,6 +16,7 @@ public class DataSample{
 
    String sampleName;
    ArrayList<Byte> loci = new ArrayList<Byte>();
+   DataSample parentSample;
 
    public DataSample(String n){
       sampleName = n;
@@ -24,6 +25,16 @@ public class DataSample{
    public DataSample(String n, ArrayList<Byte> l){
        sampleName = n;
        loci = l;
+   }
+   
+   public DataSample(DataSample d){
+       //associate this virtual sample with its parent sample
+       sampleName = d.getName() + "-boot";
+       parentSample = d;
+   }
+   
+   public DataSample getEquiv(){
+       return parentSample;
    }
 
    public String getName(){
@@ -60,5 +71,7 @@ public class DataSample{
        }
        return s.toString();
    }
+   
+
 
 }
