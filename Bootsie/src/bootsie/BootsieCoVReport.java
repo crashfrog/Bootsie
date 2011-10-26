@@ -28,9 +28,9 @@ public class BootsieCoVReport {
         java.text.NumberFormat f = BootsieApp.defaultFormat;
         StringBuilder export = new StringBuilder();
         export.append("Analysis completed with ").append(badBootstraps).append(" bootstraps rejected (probably for zero mean.)\n");
-        export.append("No.\tCoV\tMean GD\tStd Dev\n");
+        export.append("No.\tCoV\n");
         for (int i = 1; i <= coefficientsOfVariation.size(); i++){
-            export.append(i).append("\t").append(new java.text.DecimalFormat("#0.00%").format(coefficientsOfVariation.get(i - 1))).append("\t").append(f.format(means.get(i -1))).append("\t").append(f.format(stdDevs.get(i - 1))).append("\n");
+            export.append(i).append("\t").append(new java.text.DecimalFormat("#0.00%").format(coefficientsOfVariation.get(i - 1))).append("\n");
         }
         
         return export.toString();

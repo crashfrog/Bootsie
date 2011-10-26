@@ -44,6 +44,7 @@ public class BootsieApp extends SingleFrameApplication {
    public final boolean svgWorks = false;
    public static final java.text.NumberFormat defaultFormat = new java.text.DecimalFormat("#.000000");
 
+
     @Override protected void startup() {
         view = new BootsieView(this);
         show(view);

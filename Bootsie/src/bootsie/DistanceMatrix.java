@@ -75,8 +75,7 @@ public class DistanceMatrix extends HashMap<DataSample, HashMap> {
             
            keyList.remove(a); 
            for(DataSample b : keyList){
-               this.put(a, b, MathCore.simpleGeneticSimilarity(a, b));
-               //this.put(a, b, MathCore.jaccardGeneticDistance(a, b));
+               this.put(a, b, MathCore.defaultCalculator.distance(a, b));
            }
            
            
