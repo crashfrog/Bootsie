@@ -90,9 +90,10 @@ public class BootsieBootstrapper extends Thread {
            data = d;
        }
 
+      @Override
         public void run() {
            try {
-               MathCore.bootstrapPairwiseCoefficientOfVariation(data, new BootstrapMonitor(data));
+               MathCore.bootstrapLinearPairwiseCoefficientofVariation(data, new BootstrapMonitor(data));
            } catch (Exception ex) {
                //error handling
                
