@@ -45,6 +45,16 @@ public class MathCore {
         mean = mean / (double) numbers.size();
         return mean;
     }
+    
+    public static double doubleCoV(ArrayList<Double> numbers){
+       Double mean = doubleMean(numbers);
+       Double stdDev = doubleStdDev(numbers, mean);
+       Double cov = Double.NaN;
+       if (mean != 0.0){
+          cov = stdDev / mean;
+       }
+       return cov;
+    }
 
     public static void bootstrapPairwiseCoefficientOfVariation(PopulationMatrixModel data, BootstrapMonitor monitor) {
         monitor.startingOp();
@@ -94,27 +104,75 @@ public class MathCore {
         monitor.completeAllOps();
     }
 
-    public static ArrayList<Double> bootstrapCovTest(PopulationMatrixModel data, int numTests) {
+    public static void bootstrapCovTest(PopulationMatrixModel data, int numTests) {
         //estimator function. Returns actual CoV values to evade compiler optimization.
         ArrayList<Double> covArray = new ArrayList<Double>();
-        int n;
-        for (n = 0; n <= numTests; n++) {
-            MathCore.getCoVOfOneBootstrap(data, (int) (data.getLength() * .40));
-        }
-        return covArray;
+        int bootVal = (int) (data.getLength() * .75);
+        ArrayList<DataSample> s = (ArrayList<DataSample>) data.samples.clone();
+          ArrayList<Double> covs = new ArrayList<Double>();
+          for (DataSample a : data.samples){
+             s.remove(a);
+             for (DataSample b : s) {
+                ArrayList<Double> distances = new ArrayList<Double>();
+                for (int n = 0; n < numTests; n++) {
+                   //random bootstrap with replacement
+                   DataSample ab = new DataSample(a);
+                   DataSample bb = new DataSample(b);
+                   for (int p = 0; p < bootVal; p++){
+                      Integer r = new Integer((int) (Math.random() * data.getLength() - 1) + 1);
+                      ab.loci.add(a.loci.get(r));
+                      bb.loci.add(b.loci.get(r));
+                   }
+                   Double gd = MathCore.defaultCalculator.distance(a, b);
+                   distances.add(gd);
+                }
+                Double cov = doubleCoV(distances);
+               
+                   covs.add(cov);
+                
+             }
+          }
+          Double meanCov = doubleMean(covs);
     }
-
-    public static ArrayList<Double> getCoVOfOneBootstrap(PopulationMatrixModel data, int bootstrapVal) {
-        //a method to produce a random-with-replacement sample of N loci from the population
-        ArrayList<Integer> picks = new ArrayList<Integer>();
-        int lociSize = data.getLength();
-        for (int i = 0; i < bootstrapVal; i++) {
-            picks.add(new Integer((int) (Math.random() * lociSize - 1) + 1));
-        }
-        PopulationMatrix bootstrap = data.getBootstrap(picks);
-        bootstrap.populateGeneticDistanceMatrix();
-        ArrayList<Double> values = bootstrap.getGeneticDistances();
-        return values;
+    
+    public static void bootstrapLinearPairwiseCoefficientofVariation(PopulationMatrixModel data, BootstrapMonitor monitor){
+       monitor.startingOp();
+       ArrayList<Double> covResultsArray = new ArrayList<Double>();
+       int lociSize = data.getLength();
+       int numBadStraps = 0;
+       for (int i = 1; i <= lociSize; i++){
+          ArrayList<DataSample> s = (ArrayList<DataSample>) data.samples.clone();
+          ArrayList<Double> covs = new ArrayList<Double>();
+          for (DataSample a : data.samples){
+             s.remove(a);
+             for (DataSample b : s) {
+                ArrayList<Double> distances = new ArrayList<Double>();
+                for (int n = 0; n < data.numBootstraps; n++) {
+                   //random bootstrap with replacement
+                   DataSample ab = new DataSample(a);
+                   DataSample bb = new DataSample(b);
+                   for (int p = 0; p < i; p++){
+                      Integer r = new Integer((int) (Math.random() * lociSize - 1) + 1);
+                      ab.loci.add(a.loci.get(r));
+                      bb.loci.add(b.loci.get(r));
+                   }
+                   Double gd = MathCore.defaultCalculator.distance(a, b);
+                   distances.add(gd);
+                   monitor.completeOneOp();
+                }
+                Double cov = doubleCoV(distances);
+                if (cov == Double.NaN){
+                   numBadStraps++;
+                } else {
+                   covs.add(cov);
+                }
+             }
+          }
+          Double meanCov = doubleMean(covs);
+          covResultsArray.add(meanCov);
+       }
+       data.coefficientsOfVariation = new BootsieCoVReport(covResultsArray, null, null, numBadStraps);
+       monitor.completeAllOps();
     }
 
     protected class simpleGeneticSimilarityCalculator implements BootsieDistanceCalculator {

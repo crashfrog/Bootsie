@@ -23,7 +23,7 @@ public class BootstrapMonitor {
 
     public BootstrapMonitor(PopulationMatrixModel d) {
         data = d;
-        totalBootstrapOps = data.getLength() * data.numBootstraps;
+        totalBootstrapOps = (data.getSize()*(data.getSize() + 1)) * data.numBootstraps * data.getLength();
     }
     //a monitor object to be updated by the MathCore bootstrapping routine.
     //Updates DataSetPane in some way at certain intervals.

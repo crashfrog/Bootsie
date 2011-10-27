@@ -15,7 +15,7 @@ import java.util.Iterator;
  */
 public class BootsieEstimator implements Runnable{
     
-    int numTests = 10;
+    int numTests = 3;
     
     
     public void run(){
@@ -26,7 +26,7 @@ public class BootsieEstimator implements Runnable{
         Iterator<PopulationMatrixModel> it = collection.iterator();
         while(it.hasNext()){
             PopulationMatrixModel data = it.next();
-            ArrayList<Double> cov = MathCore.bootstrapCovTest(data, numTests);
+            MathCore.bootstrapCovTest(data, numTests);
 
 
             Calendar endTime = Calendar.getInstance();
