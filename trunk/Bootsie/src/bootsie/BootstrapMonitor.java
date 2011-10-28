@@ -19,6 +19,7 @@ public class BootstrapMonitor {
     double lastRelativeProgress = 0;
     double totalBootstrapOps = 0;
     PopulationMatrixModel data;
+    java.util.Calendar beginTime;
     
 
     public BootstrapMonitor(PopulationMatrixModel d) {
@@ -47,9 +48,13 @@ public class BootstrapMonitor {
     public void completeAllOps(){
         BootsieBootstrapper.getInstance().notifyFinished();
         data.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "completeAnalysis"));
+        java.util.Calendar endTime = java.util.Calendar.getInstance();
+        long elapsedTime = endTime.getTimeInMillis() - beginTime.getTimeInMillis();
+      BootsieApp.getApplication().report(data.getName() + " finished in: " + BootsieApp.calculateElapsed(elapsedTime));
     }
 
     void startingOp() {
         data.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "beginComputation"));
+        beginTime = java.util.Calendar.getInstance();
     }
 }
