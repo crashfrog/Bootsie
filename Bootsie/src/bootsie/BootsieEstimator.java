@@ -11,7 +11,7 @@ import java.util.Iterator;
 
 /**
  *
- * @author jpayne
+ * @author Justin Payne
  */
 public class BootsieEstimator implements Runnable{
     
@@ -54,9 +54,9 @@ public class BootsieEstimator implements Runnable{
         boolean keepGoing = true;
         PopulationMatrixModel data;
         
-  private EstimatorThread(PopulationMatrixModel d){
-    data = d;
-  }
+        private EstimatorThread(PopulationMatrixModel d){
+          data = d;
+        }
         
         public void run(){
           while (keepGoing){
@@ -64,10 +64,10 @@ public class BootsieEstimator implements Runnable{
           }
         }
         
-  public int numTests(){
-    return numTestsRan;
-  }
-        
+        public int numTests(){
+          return numTestsRan;
+        }
+          
         public synchronized stop(){
           keepGoing = false;
         }
