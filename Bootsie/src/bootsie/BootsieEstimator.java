@@ -48,4 +48,28 @@ public class BootsieEstimator implements Runnable{
         BootsieApp.getApplication().estimate(s.toString());
     }
 
+      private class EstimatorThread implements Runnable {
+      
+        int numTestsRan = 0;
+        boolean keepGoing = true;
+        PopulationMatrixModel data;
+        
+  private EstimatorThread(PopulationMatrixModel d){
+    data = d;
+  }
+        
+        public void run(){
+          while (keepGoing){
+          //do the test
+          }
+        }
+        
+  public int numTests(){
+    return numTestsRan;
+  }
+        
+        public synchronized stop(){
+          keepGoing = false;
+        }
+      }
 }
