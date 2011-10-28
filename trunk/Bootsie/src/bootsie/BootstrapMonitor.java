@@ -10,7 +10,7 @@ import java.text.Format;
 
 /**
  *
- * @author John Foster
+ * @author Justin Payne
  */
 public class BootstrapMonitor {
     
