@@ -189,11 +189,6 @@ public class BootsieApp extends SingleFrameApplication {
         launch(BootsieApp.class, args);
     }
 
-   @Action
-   public void beginAnalysis() {
-      //dispatch computation threads
-   }
-
    
     void exportFile(File file, StringBuilder export) {
         Charset charset = Charset.forName("US-ASCII");
