@@ -5,48 +5,51 @@
 
 package bootsie;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Justin Payne
  */
-public class BootsieEstimator implements Runnable{
+public class BootsieEstimator extends Thread{
     
     int numTests = 3;
     
-    
+    @Override
     public void run(){
         PopulationMatrixModelCollection collection = PopulationMatrixModelCollection.getInstance();
         StringBuilder s = new StringBuilder();
-        Calendar beginTime = Calendar.getInstance();
-        ArrayList<Long> elapsedTimes = new ArrayList<Long>();
+        long projectedElapsedTotalTime = 0;
         Iterator<PopulationMatrixModel> it = collection.iterator();
         while(it.hasNext()){
+            Calendar beginTime = Calendar.getInstance();
             PopulationMatrixModel data = it.next();
-            MathCore.bootstrapCovTest(data, numTests);
-
-
+            EstimatorThread estimator = new EstimatorThread(data);
+            new Thread(estimator).start();
+            try {
+                sleep(3000);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(BootsieEstimator.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            estimator.stop();
             Calendar endTime = Calendar.getInstance();
-            long elapsedTime = endTime.getTimeInMillis() - beginTime.getTimeInMillis();
-            //extrapolate elapsed time
-            elapsedTime *= data.numBootstraps * data.getLength();
-            elapsedTime /= numTests;
-            elapsedTimes.add(new Long(elapsedTime));
-        
+            double elapsedTime = endTime.getTimeInMillis() - beginTime.getTimeInMillis();
+            double numTests = (double) estimator.numTests();
+            double timePerOp = elapsedTime / numTests;
+            long totalBootstrapOps = (long) ((data.getSize()*(data.getSize() + 1)) * .5 * data.numBootstraps * data.getLength());
+            long projectedElapsedTime = (long) (totalBootstrapOps * timePerOp);
+            projectedElapsedTotalTime += projectedElapsedTime;
         }
-        long projectedElapsedTime = 0;
-        Iterator<Long> il = elapsedTimes.iterator();
-        while (il.hasNext()){
-            projectedElapsedTime += il.next();
-        }
-        
         s.append("Estimated completion time: ");
-        s.append(BootsieApp.calculateElapsed(projectedElapsedTime));
+        s.append(BootsieApp.calculateElapsed(projectedElapsedTotalTime));
         BootsieApp.getApplication().estimate(s.toString());
     }
+    
+    
+
 
       private class EstimatorThread implements Runnable {
       
@@ -58,17 +61,35 @@ public class BootsieEstimator implements Runnable{
           data = d;
         }
         
-        public void run(){
-          while (keepGoing){
-          //do the test
+        @Override
+          public void run() {
+              Iterator<DataSample> it = data.iterator();
+              DataSample a = data.samples.get(0);
+              while (keepGoing) {
+                  //do the test
+                  if (it.hasNext()) {
+                      DataSample b = it.next();
+                      DataSample ab = new DataSample(a);
+                      DataSample bb = new DataSample(b);
+                      for (int p = 0; p < (data.getLength() * .5); p++) {
+                          Integer r = new Integer((int) (Math.random() * data.getLength() - 1) + 1);
+                          ab.loci.add(a.loci.get(r));
+                          bb.loci.add(b.loci.get(r));
+                      }
+                      Double gd = MathCore.defaultCalculator.distance(a, b);
+                      numTestsRan++;
+                  } else {
+                      it = data.iterator();
+                  }
+
+              }
           }
-        }
         
         public int numTests(){
           return numTestsRan;
         }
           
-        public synchronized stop(){
+        public synchronized void stop(){
           keepGoing = false;
         }
       }
