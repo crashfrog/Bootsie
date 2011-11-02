@@ -78,7 +78,7 @@ public class MathCore {
                       ab.loci.add(a.loci.get(r));
                       bb.loci.add(b.loci.get(r));
                    }
-                   Double gd = MathCore.defaultCalculator.distance(a, b);
+                   Double gd = MathCore.defaultCalculator.distance(ab, bb);
                    distances.add(gd);
                    monitor.completeOneOp();
                 }

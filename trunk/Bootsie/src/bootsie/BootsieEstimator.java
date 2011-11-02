@@ -16,8 +16,6 @@ import java.util.logging.Logger;
  */
 public class BootsieEstimator extends Thread{
     
-    int numTests = 3;
-    
     @Override
     public void run(){
         PopulationMatrixModelCollection collection = PopulationMatrixModelCollection.getInstance();
@@ -30,7 +28,7 @@ public class BootsieEstimator extends Thread{
             EstimatorThread estimator = new EstimatorThread(data);
             new Thread(estimator).start();
             try {
-                sleep(3000);
+                sleep(1500);
             } catch (InterruptedException ex) {
                 Logger.getLogger(BootsieEstimator.class.getName()).log(Level.SEVERE, null, ex);
             }
