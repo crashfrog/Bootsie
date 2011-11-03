@@ -120,7 +120,7 @@ public class PNGPlotter extends BufferedImage implements Plotter {
       BootsieApp.getApplication().exportToReportDirectory(this, data.getName(), "cov.png");
    }
 
-    private int determineXTicks() {
+    private int determinXTicks() {
         x_tick_labels = new ArrayList<Integer>();
         Integer y = 40;
         int i;
@@ -131,6 +131,19 @@ public class PNGPlotter extends BufferedImage implements Plotter {
         xPlotWidth = 200;
         
         return i;
+    }
+    
+    private int determineXTicks(){
+       x_tick_labels = new ArrayList<Integer>();
+       int numTicks = 5; //TODO: generate this value
+       int length = data.getLength(); //number of loci;
+       length = ((int) (length / numTicks) + 1) * numTicks;
+       int space = length / numTicks;
+       for (int i = 1; i <= numTicks; i++){
+          x_tick_labels.add(new Integer(i * space));
+       }
+    
+       return numTicks;
     }
 
 }
