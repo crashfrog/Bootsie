@@ -37,7 +37,7 @@ public class BootsieEstimator extends Thread{
             double elapsedTime = endTime.getTimeInMillis() - beginTime.getTimeInMillis();
             double numTests = (double) estimator.numTests();
             double timePerOp = elapsedTime / numTests;
-            long totalBootstrapOps = (long) ((data.getSize()*(data.getSize() + 1)) * .5 * data.numBootstraps * data.getLength());
+            long totalBootstrapOps = (long) ((data.getSize()*(data.getSize() - 1)) * .5 * data.numBootstraps * data.getLength());
             long projectedElapsedTime = (long) (totalBootstrapOps * timePerOp);
             projectedElapsedTotalTime += projectedElapsedTime;
         }
@@ -69,7 +69,7 @@ public class BootsieEstimator extends Thread{
                       DataSample b = it.next();
                       DataSample ab = new DataSample(a);
                       DataSample bb = new DataSample(b);
-                      for (int p = 0; p < (data.getLength() * .5); p++) {
+                      for (int p = 0; p < (data.getLength() * .3); p++) {
                           Integer r = new Integer((int) (Math.random() * data.getLength() - 1) + 1);
                           ab.loci.add(a.loci.get(r));
                           bb.loci.add(b.loci.get(r));
