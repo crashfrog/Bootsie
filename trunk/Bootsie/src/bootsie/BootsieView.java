@@ -30,7 +30,7 @@ public class BootsieView extends FrameView {
         super(app);
 
         initComponents();
-        
+        this.jScrollPane1.repaint();
         
 
         // status bar initialization - message timeout, idle icon and busy animation, etc
