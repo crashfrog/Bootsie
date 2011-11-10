@@ -132,16 +132,17 @@ public class DataSetPanel extends javax.swing.JPanel {
 
     @Override
     public void paintComponent(Graphics g) {
-        this.setOpaque(isComputing);
+        //this.setOpaque(isComputing);
         NumBootstraps.setOpaque(false);
         if (isComputing){
             //display 
+           super.paintComponent(g);
             Graphics2D graphics = (Graphics2D) g;
             
             
             graphics.setPaint(Color.green);
             graphics.fill(new Rectangle2D.Double(0, 0, new Double(this.getSize().width * computingProgress), new Double(this.getSize().height)));           
-            //super.paint(g);
+            
         } else {
             super.paintComponent(g);
         }

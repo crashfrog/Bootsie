@@ -137,7 +137,8 @@ public class PNGPlotter extends BufferedImage implements Plotter {
        x_tick_labels = new ArrayList<Integer>();
        int numTicks = 5; //TODO: generate this value
        int length = data.getLength(); //number of loci;
-       length = ((int) (length / numTicks) + 1) * numTicks;
+       length = ((int) (length / 10) + 1) * 10;
+       xPlotWidth = length;
        int space = length / numTicks;
        for (int i = 1; i <= numTicks; i++){
           x_tick_labels.add(new Integer(i * space));

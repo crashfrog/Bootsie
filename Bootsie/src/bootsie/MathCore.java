@@ -26,10 +26,14 @@ public class MathCore {
         //floating-point values.
         double stdDev = 0.0;
         double variance = 0.0;
+        double numValues = 0;
         for (Double value : numbers) { //for each locus in loci
+           if (value.isNaN() == false){
             variance += Math.pow((value - mean), 2); //(value - mean) squared
+            numValues++;
+           }
         }
-        variance /= (double) (numbers.size() - 1);
+        variance /= (numValues);
         stdDev = Math.sqrt(variance);
         return stdDev;
     }
@@ -39,17 +43,23 @@ public class MathCore {
         //point values.
         //System.out.println(numbers);
         double mean = 0.0;
+        double numValues = 0;
         for (Double value : numbers) { //for each value in numbers
+           if (value.isNaN() == false){
             mean += value;
+            numValues++;
+           }
         }
-        mean = mean / (double) numbers.size();
-        return mean;
+        if (numValues > 0) {
+          mean = mean / numValues;
+       }
+       return mean;
     }
     
     public static double doubleCoV(ArrayList<Double> numbers){
        Double mean = doubleMean(numbers);
        Double stdDev = doubleStdDev(numbers, mean);
-       Double cov = Double.NaN;
+       Double cov = 1.0;
        if (mean != 0.0){
           cov = stdDev / mean;
        }
@@ -83,8 +93,10 @@ public class MathCore {
                    monitor.completeOneOp();
                 }
                 Double cov = doubleCoV(distances);
-                if (cov == Double.NaN){
+                
+                if (cov.isNaN()){
                    numBadStraps++;
+                   System.out.println(cov);
                 } else {
                    covs.add(cov);
                 }

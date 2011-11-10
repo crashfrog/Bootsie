@@ -62,17 +62,17 @@ public class BootsieEstimator extends Thread{
         @Override
           public void run() {
               Iterator<DataSample> it = data.iterator();
+              int length = data.getLength() - 1;
               DataSample a = data.samples.get(0);
               while (keepGoing) {
                   //do the test
                   if (it.hasNext()) {
                       DataSample b = it.next();
-                      DataSample ab = new DataSample(a);
-                      DataSample bb = new DataSample(b);
-                      for (int p = 0; p < (data.getLength() * .3); p++) {
-                          Integer r = new Integer((int) (Math.random() * data.getLength() - 1) + 1);
-                          ab.loci.add(a.loci.get(r));
-                          bb.loci.add(b.loci.get(r));
+                      for (int p = 0; p < (length * .5); p++) {
+                          Integer r = new Integer((int) (Math.random() * length) + 1);
+                          a.loci.get(r);
+                          b.loci.get(r);
+                          
                       }
                       Double gd = MathCore.defaultCalculator.distance(a, b);
                       numTestsRan++;
