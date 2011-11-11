@@ -96,7 +96,6 @@ public class MathCore {
                 
                 if (cov.isNaN()){
                    numBadStraps++;
-                   System.out.println(cov);
                 } else {
                    covs.add(cov);
                 }
