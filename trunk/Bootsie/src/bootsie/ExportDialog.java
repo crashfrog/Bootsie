@@ -14,6 +14,7 @@ package bootsie;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import javax.swing.DefaultListSelectionModel;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -74,7 +75,6 @@ public class ExportDialog extends javax.swing.JDialog {
         setModalityType(java.awt.Dialog.ModalityType.APPLICATION_MODAL);
         setName("ExportDialog"); // NOI18N
         setResizable(false);
-        setType(java.awt.Window.Type.UTILITY);
 
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(bootsie.BootsieApp.class).getContext().getResourceMap(ExportDialog.class);
         exportButton.setText(resourceMap.getString("exportButton.text")); // NOI18N
@@ -179,7 +179,10 @@ public class ExportDialog extends javax.swing.JDialog {
        if (fc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION){
           //collect selected DataMatrixModels into list
           file = fc.getSelectedFile();
-          list = new ArrayList<PopulationMatrixModel>(ExportList.getSelectedValuesList());
+          list = new ArrayList<PopulationMatrixModel>();
+          for(Object m:Arrays.asList(ExportList.getSelectedValues())){
+             list.add((PopulationMatrixModel) m);
+          }
           exporter.dataExport(file, list, exportMerged.isSelected());
           this.setVisible(false);
        }

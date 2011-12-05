@@ -353,7 +353,6 @@ public class BootsieView extends FrameView {
 
         helpDialog.setTitle(resourceMap.getString("Bootsie Help.title")); // NOI18N
         helpDialog.setName("Bootsie Help"); // NOI18N
-        helpDialog.setType(java.awt.Window.Type.POPUP);
 
         helpScrollPane.setName("helpScrollPane"); // NOI18N
 
