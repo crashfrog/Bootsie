@@ -62,7 +62,7 @@ public class BootsieEstimator extends Thread{
         @Override
           public void run() {
               Iterator<DataSample> it = data.iterator();
-              int length = data.getLength() - 1;
+              int length = data.getLength() - 2;
               DataSample a = data.samples.get(0);
               while (keepGoing) {
                   //do the test
@@ -70,9 +70,13 @@ public class BootsieEstimator extends Thread{
                       DataSample b = it.next();
                       for (int p = 0; p < (length * .5); p++) {
                           Integer r = new Integer((int) (Math.random() * length) + 1);
-                          a.loci.get(r);
-                          b.loci.get(r);
-                          
+                          try {
+                             //data access is most of the overhead for the bootstrapping method
+                            a.loci.get(r);
+                            b.loci.get(r);
+                         } catch (IndexOutOfBoundsException ex) {
+                            //do nothing
+                         }
                       }
                       Double gd = MathCore.defaultCalculator.distance(a, b);
                       numTestsRan++;
