@@ -80,7 +80,7 @@ public class BootsieApp extends SingleFrameApplication {
 
     }
     
-    private static String NTSYS_REPORT_SAMPLE_NAME_TAB_DATA_REGEX = "[a-zA-Z0-9| |-]+\t[0|1|9|.|?|-]+";
+    private static String NTSYS_REPORT_SAMPLE_NAME_TAB_DATA_REGEX = "[a-zA-Z0-9| |-]+[\t ][0|1|9|.|?|-]+";
     private static String NTSYS_REPORT_SAMPLE_NAME_REGEX = "[a-zA-Z0-9| |-]+";
     private static String NTSYS_REPORT_DATA_REGEX = "\t[0-9|?|.|-]+";
     private static String NTSYS_REPORT_FIRST_LINE_IS_NOT_NAME = "[0-9]+\t[0-9]+";
