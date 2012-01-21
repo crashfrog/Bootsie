@@ -82,8 +82,8 @@ public class BootsieApp extends SingleFrameApplication {
     
     private static String NTSYS_REPORT_SAMPLE_NAME_TAB_DATA_REGEX = "[a-zA-Z0-9| |-]+[\t ][0|1|9|.|?|-]+";
     private static String NTSYS_REPORT_SAMPLE_NAME_REGEX = "[a-zA-Z0-9| |-]+";
-    private static String NTSYS_REPORT_DATA_REGEX = "\t[0-9|?|.|-]+";
-    private static String NTSYS_REPORT_FIRST_LINE_IS_NOT_NAME = "[0-9]+\t[0-9]+";
+    private static String NTSYS_REPORT_DATA_REGEX = "[\t ][0-9|?|.|-]+";
+    //private static String NTSYS_REPORT_FIRST_LINE_IS_NOT_NAME = "[0-9]+\t[0-9]+";
     private static String TEXT_FILE_EXTENSION = ".txt";
 
     public static void parseFile(File source){
@@ -96,7 +96,7 @@ public class BootsieApp extends SingleFrameApplication {
          String popName;
          //check to see if first line is name of a population or the number of loci/samples
          line = io.readLine();
-         if (line.matches(NTSYS_REPORT_FIRST_LINE_IS_NOT_NAME)){
+         if (line.matches(NTSYS_REPORT_SAMPLE_NAME_TAB_DATA_REGEX)){
              popName = source.getName().replaceFirst(TEXT_FILE_EXTENSION, "");//trim ".txt" when using filename as popname
          } else {
              popName = line;
@@ -120,7 +120,7 @@ public class BootsieApp extends SingleFrameApplication {
                m = pattern.matcher(line);
 
                m.find();
-               String sampleName = "";
+               String sampleName;
                sampleName = m.group();
 
                pattern = Pattern.compile(NTSYS_REPORT_DATA_REGEX);
