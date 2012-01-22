@@ -31,7 +31,7 @@ public class PopgeneDataExporter extends DataExporter {
          export.append("\nNumber of loci = ");
          Integer loci = data.get(0).getLength();
          export.append(loci.toString());
-         export.append("\nLoci name :\n");
+         export.append("\nLocus name :\n");
          for (int i = 1; i <= loci; i++){
              export.append(i);
              export.append(" ");

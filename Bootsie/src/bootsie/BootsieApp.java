@@ -83,6 +83,7 @@ public class BootsieApp extends SingleFrameApplication {
     private static String NTSYS_REPORT_SAMPLE_NAME_TAB_DATA_REGEX = "[a-zA-Z0-9| |-]+[\t ][0|1|9|.|?|-]+";
     private static String NTSYS_REPORT_SAMPLE_NAME_REGEX = "[a-zA-Z0-9| |-]+";
     private static String NTSYS_REPORT_DATA_REGEX = "[\t ][0-9|?|.|-]+";
+    private static String NTSYS_REPORT_DATA_NO_LABEL_REGEX = "[0-9|?|.|-]+";
     //private static String NTSYS_REPORT_FIRST_LINE_IS_NOT_NAME = "[0-9]+\t[0-9]+";
     private static String TEXT_FILE_EXTENSION = ".txt";
 
@@ -103,12 +104,11 @@ public class BootsieApp extends SingleFrameApplication {
          }
          
 
-         int loci = 0;
          int samples = 0;
          PopulationMatrixModel dataModel = BootsieApp.getApplication().view.newDataModel(popName);
 
          while ((line = io.readLine()) != null) {
-            if (line.contains("end") || line.equals("\r") || line.equals("\n") || line.equals("\r\n")) {
+            if (line.contains("end") || line.equals("\r") || line.equals("\n") || line.equals("\r\n") || line.equals("\n\r")) {
                //finish parsing and close datamatrixmodel
                BootsieApp.getApplication().report("Loaded " + popName + ".");
             } else if (line.matches(NTSYS_REPORT_SAMPLE_NAME_TAB_DATA_REGEX)) {
@@ -160,10 +160,40 @@ public class BootsieApp extends SingleFrameApplication {
                //debug
                //System.out.println(dataSample.getLoci());
                dataModel.addDataSample(dataSample);
+               samples++;
 
+            } else if (line.matches(NTSYS_REPORT_DATA_NO_LABEL_REGEX)) {
+               //data but no sample name
+               String sampleName = "Sample " + samples;
+               char c;
+               int length = line.length();
+               DataSample dataSample = new DataSample(sampleName);
+               for (int i = 0; i < length; i++) {
+                  c = line.charAt(i);
+                  if (c == 45 || c == 57 || c== 46) { //-, ., and 9 are 'no data' characters
+                     c = '?';
+                     dataSample.getLoci().add(new Byte((byte) -1));
+                     //System.out.print('?');
+                  }
+                  if (c != '\t') {
+                     //dataSample.getLoci().add(Byte.parseByte(Character.toString(c)));
+                     //or
+                     
+                      if (c == (byte) 49){ //1
+                        dataSample.getLoci().add(new Byte((byte) 1));
+                      } else if (c == (byte) 48){ //0
+                        dataSample.getLoci().add(new Byte((byte) 0));
+                      }
+                      
+                  }
+               }
+               dataModel.addDataSample(dataSample);
+               samples++;
+            
             } else {
                popName = line;
                dataModel = BootsieApp.getApplication().view.newDataModel(popName);
+               samples = 0;
             }
          }
       } catch (FileNotFoundException ex) {
