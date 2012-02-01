@@ -108,7 +108,7 @@ public class BootsieApp extends SingleFrameApplication {
          PopulationMatrixModel dataModel = BootsieApp.getApplication().view.newDataModel(popName);
 
          while ((line = io.readLine()) != null) {
-            if (line.contains("end") || line.equals("\r") || line.equals("\n") || line.equals("\r\n") || line.equals("\n\r")) {
+            if (line.contains("end") || line.equals("\r") || line.equals("\n") || line.equals("\r\n") || line.equals("")) {
                //finish parsing and close datamatrixmodel
                BootsieApp.getApplication().report("Loaded " + popName + ".");
             } else if (line.matches(NTSYS_REPORT_SAMPLE_NAME_TAB_DATA_REGEX)) {
