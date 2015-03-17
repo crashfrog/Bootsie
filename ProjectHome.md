@@ -1,0 +1,1 @@
+A program to perform coefficient of variation analysis on AFLP markers, and export marker data into a variety of text formats. Implemented in Java 6.
